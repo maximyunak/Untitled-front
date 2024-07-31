@@ -15,9 +15,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
-    // "noUnusedLocals": ,
-    // "noUnusedParameters": false,
+    // "noUnusedLocals": true,  // для ошибки при неиспользуемых импортов
+    // "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/@types"]
+  "include": ["src", "src/@types/assets.d.ts"]
 }

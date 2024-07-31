@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { openMenu, setRotation } from "./MenuSlice";
+import { openMenu, setRotation } from "./headerSlice";
 
 export const CloseMenu: React.FC = () => {
-  const { opened, rotation } = useAppSelector((state) => state.menuSlice);
+  const { opened, rotation } = useAppSelector((state) => state.headerSlice);
 
   const dispatch = useAppDispatch();
 

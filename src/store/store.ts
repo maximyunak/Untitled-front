@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import themeSlice from "./ThemeSlice";
-import menuSlice from "../components/Layout/Header/MenuSlice";
+import headerSlice from "../components/Layout/Header/headerSlice";
 
 const rootReduser = combineReducers({});
 
@@ -8,7 +8,7 @@ export const setupStore = () => {
   return configureStore({
     reducer: {
       themeSlice,
-      menuSlice
+      headerSlice
     },
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(postApi.middleware), // for rtk-query
   });

@@ -27,3 +27,7 @@ body {
 .transform-xy {
   transform: translate(-50%, -50%);
 }
+
+.filter-m {
+  /* backdrop-filter: blur(2px); */
+}
