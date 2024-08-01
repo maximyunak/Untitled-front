@@ -113,7 +113,6 @@ export const Header: React.FC = () => {
                 alt="avatar"
                 className=" h-10 rounded-full "
               />
-              {/* <h1 className="tracking-normal">Maxim Yunak</h1> */}
               <RiArrowDownSLine
                 size={25}
                 className={`${

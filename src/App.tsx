@@ -5,19 +5,25 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Messages } from "./pages/Messages";
 import { Profile } from "./pages/Profile";
-// import { Home } from "./pages/home";
+import { Authorization } from "./pages/Authorization";
 
 export const App: React.FC = () => {
   return (
-    <>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/Messages" element={<Messages />} />
-        </Routes>
-      </Layout>
-    </>
+    <Routes>
+      <Route path="/registration" element={<Authorization />} />
+      <Route
+        path="*"
+        element={
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/messages" element={<Messages />} />
+            </Routes>
+          </Layout>
+        }
+      />
+    </Routes>
   );
 };

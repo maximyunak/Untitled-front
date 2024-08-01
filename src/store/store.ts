@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import themeSlice from "./ThemeSlice";
 import headerSlice from "../components/Layout/Header/headerSlice";
+import { registrationSlice } from "../modules/Autorization";
 
 const rootReduser = combineReducers({});
 
@@ -8,7 +9,8 @@ export const setupStore = () => {
   return configureStore({
     reducer: {
       themeSlice,
-      headerSlice
+      headerSlice,
+      registrationSlice,
     },
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(postApi.middleware), // for rtk-query
   });

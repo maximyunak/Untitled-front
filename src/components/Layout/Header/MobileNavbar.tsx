@@ -54,7 +54,7 @@ export const MobileNavbar = () => {
 
   return (
     <>
-      <div className="container flex justify-between items-center min-[781px]:hidden">
+      <div className="container flex justify-between items-center min-[781px]:hidden min-w-full text-black bg-[#303030] ">
         <LogoBlock />
         <CloseMenu />
       </div>
@@ -75,16 +75,16 @@ export const MobileNavbar = () => {
         )}
         {/* </AnimatePresence> */}
         <motion.nav
-          className="mobile bg-slate-50 min-[780px]:hidden text-black max-[780px]:absolute max-[780px]:h-screen max-[780px]:w-1/2 max-[780px]:top-0 max-[450px]:w-3/4 z-50"
+          className="mobile w-full bg-white min-[780px]:hidden text-black max-[780px]:absolute max-[780px]:h-screen max-[780px]:w-1/2 max-[780px]:top-0 max-[450px]:w-3/4 z-50"
           initial={{ opacity: 0 }}
           animate={opened ? "open" : "closed"}
           exit={{ opacity: 0 }}
           variants={variants}
         >
-          <div className="container flex  gap-10 items-center justify-between max-[780px]:flex-col max-[780px]:items-start max-[640px]:ml-0 max-[780px]:ml-11 max-[768px]:ml-4">
-            <div className="flex items-center gap-32 max-[780px]:flex-col max-[780px]:items-start max-[780px]:gap-10">
+          <div className="container flex h-full gap-10 items-center justify-between max-[780px]:flex-col max-[780px]:items-start max-[640px]:ml-0 max-[780px]:ml-11 max-[768px]:ml-4">
+            <div className="flex items-center gap-40 max-[780px]:flex-col max-[780px]:items-start max-[780px]:gap-10">
               <LogoBlock />
-              <ul className="flex gap-10 max-[780px]:flex-col">
+              <ul className="flex gap-7 max-[780px]:flex-col">
                 {items.map((el, i) => (
                   <MenuItem
                     key={`${el.title}${el.path}_${i}_1`}
@@ -96,21 +96,14 @@ export const MobileNavbar = () => {
               </ul>
             </div>
 
-            <div className="flex gap-5 max-[780px]:flex-col max-[780px]:items-start">
-              <motion.button
-                animate={opened ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
-                transition={{ delay: (items.length + 1) * 0.1 }}
-                initial={{ x: 50, opacity: 0 }}
-              >
-                Login
-              </motion.button>
-              <motion.button
-                animate={opened ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
-                transition={{ delay: (items.length + 2) * 0.1 }}
-                initial={{ x: 50, opacity: 0 }}
-              >
-                Sign up
-              </motion.button>
+            <div className="flex gap-5 max-[780px]:flex-col max-[780px]:items-start mt-auto mb-16">
+              <MenuItem
+                id={items.length + 1}
+                item="Settings"
+                path="/settings"
+              />
+              <MenuItem id={items.length + 2} item="Theme" path="/theme" />
+              <MenuItem id={items.length + 3} item="Log out" path="/logout" />
             </div>
           </div>
         </motion.nav>

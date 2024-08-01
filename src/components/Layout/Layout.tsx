@@ -22,7 +22,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     >
       <Header />
       <div className="container">
-        {/* <Sidebar /> */}
         <main className="mt-14">{children}</main>
       </div>
       {/* <Footer /> */}
