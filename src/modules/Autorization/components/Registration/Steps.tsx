@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useAppSelector } from "../../../../store/hooks";
 
 const steps = [
@@ -13,31 +13,61 @@ export const Steps = () => {
     (state) => state.registrationSlice
   );
 
+  const stepsVariants: Variants = {
+    initial: {
+      width: `${100 / steps.length}%`,
+    },
+    animate: {
+      width: `${(currentStep / steps.length) * 100}%`,
+    },
+  };
+
   return (
-    <div className="flex items-center w-full justify-center">
-      {steps.map((step, index) => (
-        <div key={step.id} className="flex items-center">
-          <motion.div
-            className={`w-8 h-8 flex items-center justify-center ${
-              currentStep >= step.id ? "bg-customPurple" : "bg-gray-400"
-            } text-white rounded-full cursor-pointer transition-colors duration-200`}
-            whileHover={{ scale: currentStep >= step.id ? 1.1 : 1 }}
-            whileTap={{ scale: currentStep >= step.id ? 0.95 : 1 }}
-          >
-            {index + 1}
-          </motion.div>
-          {index < steps.length - 1 && (
+    <div className="flex items-center w-full justify-center flex-col">
+      <div className="flex mb-10">
+        {steps.map((step, index) => (
+          <div key={step.id} className="flex items-center">
             <motion.div
-              className={`h-1 mx-2 ${
-                currentStep > step.id ? "bg-customPurple" : "bg-gray-400"
-              } transition-colors duration-200`}
-              initial={{ width: 0 }}
-              animate={{ width: "4rem" }}
-              transition={{ duration: 0.5 }}
-            />
-          )}
-        </div>
-      ))}
+              className={`w-8 h-8 flex items-center justify-center ${
+                currentStep >= step.id ? "bg-customPurple" : "bg-gray-400"
+              } text-white rounded-full cursor-pointer transition-colors duration-200`}
+              whileHover={{ scale: currentStep >= step.id ? 1.1 : 1 }}
+              whileTap={{ scale: currentStep >= step.id ? 0.95 : 1 }}
+            >
+              {index + 1}
+            </motion.div>
+            {index < steps.length - 1 && (
+              <motion.div
+                className={`h-1 mx-2 ${
+                  currentStep > step.id ? "bg-customPurple" : "bg-gray-400"
+                } transition-colors duration-200`}
+                initial={{ width: 0 }}
+                animate={{ width: "4rem" }}
+                transition={{ duration: 0.5 }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="w-12 relative">
+        <motion.div
+          className="absolute rounded-full bottom-0 left-0  h-4 w-12 flex j items-center bg-customPurple"
+          variants={stepsVariants}
+          initial="initial"
+          animate="animate"
+        >
+          <div className="absolute flex justify-center items-center">
+            {steps.map((_, index) => (
+              <span
+                className={`h-2 w-2 block rounded-full mx-1 z-10 ${
+                  index + 1 <= currentStep ? "bg-white" : "bg-slate-600"
+                } transition-colors duration-300`}
+              ></span>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };
