@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
-import { useAppSelector } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { setStep } from "../../store/registrationSlice";
 
 const steps = [
   { id: 1, label: "Step 1" },
@@ -9,6 +10,7 @@ const steps = [
 ];
 
 export const Steps = () => {
+  const dispatch = useAppDispatch();
   const { step: currentStep } = useAppSelector(
     (state) => state.registrationSlice
   );
@@ -22,9 +24,13 @@ export const Steps = () => {
     },
   };
 
+  const handleClick = (id: number) => {
+    dispatch(setStep(id));
+  };
+
   return (
     <div className="flex items-center w-full justify-center flex-col">
-      <div className="flex mb-10">
+      <div className="flex mb-4">
         {steps.map((step, index) => (
           <div key={step.id} className="flex items-center">
             <motion.div
@@ -33,6 +39,7 @@ export const Steps = () => {
               } text-white rounded-full cursor-pointer transition-colors duration-200`}
               whileHover={{ scale: currentStep >= step.id ? 1.1 : 1 }}
               whileTap={{ scale: currentStep >= step.id ? 0.95 : 1 }}
+              onClick={() => handleClick(index + 1)}
             >
               {index + 1}
             </motion.div>
@@ -50,7 +57,7 @@ export const Steps = () => {
         ))}
       </div>
 
-      <div className="w-12 relative">
+      {/* <div className="w-12 relative">
         <motion.div
           className="absolute rounded-full bottom-0 left-0  h-4 w-12 flex j items-center bg-customPurple"
           variants={stepsVariants}
@@ -62,12 +69,13 @@ export const Steps = () => {
               <span
                 className={`h-2 w-2 block rounded-full mx-1 z-10 ${
                   index + 1 <= currentStep ? "bg-white" : "bg-slate-600"
-                } transition-colors duration-300`}
+                } transition-colors duration-300 cursor-pointer`}
+                onClick={() => handleClick(index + 1)}
               ></span>
             ))}
           </div>
         </motion.div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -27,3 +27,17 @@ export const reverseVariantsStepPages = {
     opacity: 0,
   },
 };
+
+export const shakeVariants = {
+  hidden: { rotate: 0 },
+  visible: {
+    rotate: 180,
+  },
+};
+
+export const countries = ["Russia", "Island", "Germany"];
+
+export const showModalVariant = {
+  initial: { scale: 0, opacity: 0, y: -40 },
+  animate: { scale: 1, opacity: 1, y: 0 },
+};

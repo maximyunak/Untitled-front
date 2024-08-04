@@ -29,5 +29,15 @@ body {
 }
 
 .filter-m {
-  /* backdrop-filter: blur(2px); */
+  backdrop-filter: blur(5px);
+}
+
+input {
+  outline: none !important;
+}
+
+@layer utilities {
+  .transition-default {
+    @apply transition duration-default;
+  }
 }

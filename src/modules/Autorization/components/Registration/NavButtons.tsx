@@ -39,7 +39,7 @@ export const NavButtons = () => {
       </AnimatePresence>
       <motion.button
         onClick={plusClick}
-        className="bg-[#6647ff] w-full rounded-2xl text-white py-2 px-5 hover:bg-customPurple transition-colors duration-300"
+        className="bg-customPurple w-full rounded-2xl text-white py-2 px-5 hover:bg-opacity-80 transition-colors duration-300"
         whileTap={{ scale: 0.9 }}
       >
         Continue

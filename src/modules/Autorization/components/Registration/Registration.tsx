@@ -13,13 +13,18 @@ export const Registration = () => {
 
   return (
     <div className="flex items-center justify-center h-screen flex-col container">
-      <div className="border w-80 p-5 rounded-3xl overflow-hidden">
-        <div className="h-80">
-          <AnimatePresence mode="wait">
-            {step === 1 && <FirstStep key="step1" />}
-            {step === 2 && <SecondStep key="step2" />}
-            {step === 3 && <ThirdStep key="step3" />}
-          </AnimatePresence>
+      <div className="w-[400px] p-5 rounded-3xl overflow-hidden shadow-lg bg-[#303030]">
+        <div className="h-96">
+          <h1 className="text-2xl text-center font-bold mt-2 biorhyme ">
+            Registration
+          </h1>
+          <div className="mt-4">
+            <AnimatePresence mode="wait">
+              {step === 1 && <FirstStep key="step1" />}
+              {step === 2 && <SecondStep key="step2" />}
+              {step === 3 && <ThirdStep key="step3" />}
+            </AnimatePresence>
+          </div>
         </div>
 
         <Steps />

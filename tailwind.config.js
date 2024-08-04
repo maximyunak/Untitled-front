@@ -6,6 +6,9 @@ export default {
       colors: {
         customPurple: "#8b74ff", // You can add your desired color code here
       },
+      transitionDuration: {
+        default: "1000ms", // Добавляем кастомное значение
+      },
     },
   },
   plugins: [],
