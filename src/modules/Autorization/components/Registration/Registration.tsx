@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Steps } from "./Steps";
 import { NavButtons } from "./NavButtons";
-import { useAppSelector } from "../../../../store/hooks";
-import { selectStep } from "../../store/registrationSlice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { selectStep, setStep } from "../../store/registrationSlice";
 import { FirstStep } from "./Steps/FirstStep";
 import { SecondStep } from "./Steps/SecondStep";
 import { ThirdStep } from "./Steps/ThirdStep";
@@ -10,6 +10,39 @@ import { AnimatePresence } from "framer-motion";
 
 export const Registration = () => {
   const step = useAppSelector(selectStep);
+  const dispatch = useAppDispatch();
+
+  const handleChangePage = (id: number) => {
+    dispatch(setStep(id));
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.altKey) {
+      switch (event.key) {
+        case "1":
+          handleChangePage(1);
+          break;
+        case "2":
+          handleChangePage(2);
+          break;
+        case "3":
+          handleChangePage(3);
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    // Добавляем обработчик события нажатия клавиш
+    document.addEventListener("keydown", handleKeyDown);
+
+    // Убираем обработчик при размонтировании
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="flex items-center justify-center h-screen flex-col container">

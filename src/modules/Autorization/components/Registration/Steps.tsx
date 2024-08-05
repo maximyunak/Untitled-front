@@ -30,7 +30,7 @@ export const Steps = () => {
 
   return (
     <div className="flex items-center w-full justify-center flex-col">
-      <div className="flex mb-4">
+      <div className="flex mb-4 max-[780px]:hidden">
         {steps.map((step, index) => (
           <div key={step.id} className="flex items-center">
             <motion.div
@@ -57,7 +57,7 @@ export const Steps = () => {
         ))}
       </div>
 
-      {/* <div className="w-12 relative">
+      <div className="w-12 relative min-[781px]:hidden">
         <motion.div
           className="absolute rounded-full bottom-0 left-0  h-4 w-12 flex j items-center bg-customPurple"
           variants={stepsVariants}
@@ -67,7 +67,8 @@ export const Steps = () => {
           <div className="absolute flex justify-center items-center">
             {steps.map((_, index) => (
               <span
-                className={`h-2 w-2 block rounded-full mx-1 z-10 ${
+                key={`${index}_steps`}
+                className={`h-2 w-2 block rounded-full mx-1 ${
                   index + 1 <= currentStep ? "bg-white" : "bg-slate-600"
                 } transition-colors duration-300 cursor-pointer`}
                 onClick={() => handleClick(index + 1)}
@@ -75,7 +76,7 @@ export const Steps = () => {
             ))}
           </div>
         </motion.div>
-      </div> */}
+      </div>
     </div>
   );
 };

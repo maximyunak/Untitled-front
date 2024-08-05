@@ -6,6 +6,7 @@ import {
   variantsStepPages,
   countries,
   shakeVariants,
+  selectEventVariants,
 } from "../../../helpers/constants";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import {
@@ -143,7 +144,7 @@ export const FirstStep = () => {
             {visibleCounty && (
               <motion.div
                 ref={modalRef}
-                className="bg-[#282828] absolute top-[70px] rounded-xl left-0 py-3 px-4 w-full"
+                className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[70px] left-0 z-50"
                 variants={showModalVariant}
                 animate="animate"
                 exit="initial"
@@ -152,9 +153,10 @@ export const FirstStep = () => {
                 {countries.map((el, index) => (
                   <motion.h1
                     key={index}
+                    variants={selectEventVariants}
                     onClick={closeModal}
-                    whileHover={{ x: 5 }}
-                    whileTap={{ color: "#8b74ff" }}
+                    whileHover={"hover"}
+                    whileTap={"tap"}
                     className="block cursor-pointer"
                   >
                     {el}

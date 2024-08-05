@@ -41,3 +41,41 @@ export const showModalVariant = {
   initial: { scale: 0, opacity: 0, y: -40 },
   animate: { scale: 1, opacity: 1, y: 0 },
 };
+
+export const mouseEventVariants = {
+  hover: {
+    scale: 1.05,
+  },
+  tap: {
+    scale: 0.95,
+  },
+};
+
+export const selectEventVariants = {
+  hover: {
+    x: 5,
+  },
+  tap: {
+    color: "#8b74ff",
+  },
+};
+
+export const days = Array.from({ length: 31 }, (_, i) => i + 1);
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+export const years = Array.from(
+  { length: 101 },
+  (_, i) => new Date().getFullYear() - i
+);
