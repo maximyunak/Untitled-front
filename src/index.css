@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Alegreya // BioRhyme // Montserrat fonts */
+
+body {
+  font-family: "Montserrat";
+}
+
+.alegreya {
+  font-family: "Alegreya";
+}
+
+.biorhyme {
+  font-family: "BioRhyme";
+}
+
+.montserrat {
+  font-family: "Montserrat";
+}
+
+.container {
+  @apply mx-auto py-5 px-5;
+}
+
+.transform-xy {
+  transform: translate(-50%, -50%);
+}
+
+.filter-m {
+  backdrop-filter: blur(5px);
+}
+
+input {
+  outline: none !important;
+}
+
+@layer utilities {
+  .transition-default {
+    @apply transition duration-default;
+  }
+}
