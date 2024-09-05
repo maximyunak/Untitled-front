@@ -2,15 +2,25 @@ import React, { useEffect } from "react";
 import { Steps } from "./Steps.tsx";
 import { NavButtons } from "./NavButtons.tsx";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks.ts";
-import { selectStep, setStep } from "../../store/registrationSlice.ts";
+import {
+  selectStep,
+  selectType,
+  setStep,
+} from "../../store/registrationSlice.ts";
 import { FirstStep } from "./Steps/FirstStep.tsx";
 import { SecondStep } from "./Steps/SecondStep.tsx";
 import { ThirdStep } from "./Steps/ThirdStep.tsx";
 import { AnimatePresence } from "framer-motion";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Registration = () => {
   const step = useAppSelector(selectStep);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { currentStep } = useParams();
+  const type = useAppSelector(selectType);
+
+  console.log(type);
 
   const handleChangePage = (id: number) => {
     dispatch(setStep(id));
@@ -33,12 +43,19 @@ export const Registration = () => {
       }
     }
   };
+  console.log(step);
 
   useEffect(() => {
-    // Добавляем обработчик события нажатия клавиш
+    if (currentStep) {
+      dispatch(setStep(Number(currentStep)));
+    } else {
+      dispatch(setStep(1));
+    }
+  }, [currentStep]);
+
+  useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
 
-    // Убираем обработчик при размонтировании
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
@@ -59,7 +76,6 @@ export const Registration = () => {
             </AnimatePresence>
           </div>
         </div>
-
         <Steps />
         <NavButtons />
       </div>

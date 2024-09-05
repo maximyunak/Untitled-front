@@ -76,6 +76,6 @@ export const months = [
   "December",
 ];
 export const years = Array.from(
-  { length: 101 },
+  { length: 75 },
   (_, i) => new Date().getFullYear() - i
 );

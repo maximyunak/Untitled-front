@@ -6,12 +6,17 @@ import {
 } from "../../../helpers/constants.ts";
 import { useAppSelector } from "../../../../../store/hooks.ts";
 import { selectType } from "../../../store/registrationSlice.ts";
+import { useNavigate } from "react-router-dom";
 
 export const ThirdStep = () => {
   const type = useAppSelector(selectType);
 
+  // const navigate = useNavigate();
+  // navigate("/registration/3");
+
   return (
     <motion.div
+      key="stepX"
       variants={type === 0 ? variantsStepPages : reverseVariantsStepPages}
       animate={"opened"}
       initial={"initial"}

@@ -17,12 +17,16 @@ import {
 import { BiHide, BiShowAlt } from "react-icons/bi";
 
 import selectIcon from "../arrowDown.svg";
+import { useNavigate } from "react-router-dom";
 
 export const FirstStep = () => {
   const type = useAppSelector(selectType);
   const visibleCounty = useAppSelector(selectVisibleCounty);
   const [visible, setVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  // const navigate = useNavigate();
+  // navigate("/registration/1");
 
   const modalRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -59,6 +63,7 @@ export const FirstStep = () => {
     <motion.div
       variants={type === 0 ? variantsStepPages : reverseVariantsStepPages}
       animate={"opened"}
+      key="stepX"
       initial={"initial"}
       exit={"closed"}
       transition={{

@@ -10,7 +10,8 @@ import { Authorization } from "./pages/Authorization";
 export const App: React.FC = () => {
   return (
     <Routes>
-      <Route path="/registration" element={<Authorization />} />
+      <Route path="/registration/:currentStep?" element={<Authorization />} />
+
       <Route
         path="*"
         element={

@@ -31,12 +31,17 @@ const registrationSlice = createSlice({
       }
     },
     setStep(state, action: PayloadAction<number>) {
-      if (state.step < action.payload) {
+      try {
+        if (state.step < action.payload) {
+          state.type = 0;
+        } else {
+          state.type = 1;
+        }
+        state.step = action.payload;
+      } catch (error) {
+        state.step = action.payload;
         state.type = 0;
-      } else {
-        state.type = 1;
       }
-      state.step = action.payload;
     },
     setVisibleCountry(state, action: PayloadAction<boolean>) {
       state.visibleCountry = action.payload;

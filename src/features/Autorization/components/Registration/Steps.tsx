@@ -2,6 +2,7 @@ import React from "react";
 import { motion, Variants } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks.ts";
 import { setStep } from "../../store/registrationSlice.ts";
+import { useNavigate, useParams } from "react-router-dom";
 
 const steps = [
   { id: 1, label: "Step 1" },
@@ -11,9 +12,12 @@ const steps = [
 
 export const Steps = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { step: currentStep } = useAppSelector(
     (state) => state.registrationSlice
   );
+  // const params = useParams();
+  // const currentStep = Number(params.currentStep);
 
   const stepsVariants: Variants = {
     initial: {
@@ -25,7 +29,8 @@ export const Steps = () => {
   };
 
   const handleClick = (id: number) => {
-    dispatch(setStep(id));
+    // dispatch(setStep(id));
+    navigate(`/registration/${id}`);
   };
 
   return (

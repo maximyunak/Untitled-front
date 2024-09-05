@@ -6,7 +6,6 @@ import {
   selectEventVariants,
   shakeVariants,
   showModalVariant,
-  days,
   months,
   years,
   variantsStepPages,
@@ -15,9 +14,17 @@ import { useAppSelector } from "../../../../../store/hooks.ts";
 import { selectType } from "../../../store/registrationSlice.ts";
 
 import selectIcon from "../arrowDown.svg";
+import { useNavigate } from "react-router-dom";
+
+function getDaysInMonth(month: string, year: number): number {
+  const monthIndex = months.indexOf(month); // Получаем индекс месяца (0-11)
+  return new Date(year, monthIndex + 1, 0).getDate();
+}
 
 export const SecondStep: React.FC = () => {
   const type = useAppSelector(selectType);
+  // const navigate = useNavigate();
+  // navigate("/registration/2");
 
   const [visible, setVisible] = useState({
     day: false,
@@ -28,10 +35,23 @@ export const SecondStep: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<number>(1);
   const [selectedMonth, setSelectedMonth] = useState<string>("January");
   const [selectedYear, setSelectedYear] = useState<number>(2000);
+  const [daysInMonth, setDaysInMonth] = useState<number[]>([]);
 
   const dayRef = useRef<HTMLDivElement>(null);
   const monthRef = useRef<HTMLDivElement>(null);
   const yearRef = useRef<HTMLDivElement>(null);
+
+  // Обновляем дни месяца при изменении месяца или года
+  useEffect(() => {
+    const daysCount = getDaysInMonth(selectedMonth, selectedYear);
+    const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1);
+    setDaysInMonth(daysArray);
+
+    // Если выбранный день больше максимального в новом месяце, сбрасываем на 1
+    if (selectedDay > daysCount) {
+      setSelectedDay(1);
+    }
+  }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -79,6 +99,7 @@ export const SecondStep: React.FC = () => {
 
   return (
     <motion.div
+      key="stepX"
       variants={type === 0 ? variantsStepPages : reverseVariantsStepPages}
       animate={"opened"}
       initial={"initial"}
@@ -93,6 +114,7 @@ export const SecondStep: React.FC = () => {
             Enter your date of birth
           </h1>
           <div className="flex gap-2 mt-2 items-center w-full justify-between">
+            {/* Day Selector */}
             <motion.div
               whileHover={visible.day ? { scale: 1 } : "hover"}
               whileTap={visible.day ? { scale: 1 } : "tap"}
@@ -112,14 +134,14 @@ export const SecondStep: React.FC = () => {
               <AnimatePresence>
                 {visible.day && (
                   <motion.div
-                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-4 overflow-y-auto h-52"
+                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-2 overflow-y-auto max-h-52 z-10"
                     variants={showModalVariant}
                     animate="animate"
                     exit="initial"
                     initial="initial"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {days.map((day) => (
+                    {daysInMonth.map((day) => (
                       <motion.div
                         key={day}
                         onClick={() => handleOptionClick("day", day)}
@@ -136,6 +158,7 @@ export const SecondStep: React.FC = () => {
               </AnimatePresence>
             </motion.div>
 
+            {/* Month Selector */}
             <motion.div
               whileHover={visible.month ? { scale: 1 } : "hover"}
               whileTap={visible.month ? { scale: 1 } : "tap"}
@@ -155,7 +178,7 @@ export const SecondStep: React.FC = () => {
               <AnimatePresence>
                 {visible.month && (
                   <motion.div
-                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-4 overflow-y-auto h-52"
+                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-2 overflow-y-auto max-h-52 z-10"
                     variants={showModalVariant}
                     animate="animate"
                     exit="initial"
@@ -179,6 +202,7 @@ export const SecondStep: React.FC = () => {
               </AnimatePresence>
             </motion.div>
 
+            {/* Year Selector */}
             <motion.div
               whileHover={visible.year ? { scale: 1 } : "hover"}
               whileTap={visible.year ? { scale: 1 } : "tap"}
