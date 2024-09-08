@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   reverseVariantsStepPages,
@@ -14,15 +14,12 @@ import {
   selectVisibleCounty,
   setVisibleCountry,
 } from "../../../store/registrationSlice.ts";
-import { BiHide, BiShowAlt } from "react-icons/bi";
 
 import selectIcon from "../arrowDown.svg";
-import { useNavigate } from "react-router-dom";
 
 export const FirstStep = () => {
   const type = useAppSelector(selectType);
   const visibleCounty = useAppSelector(selectVisibleCounty);
-  const [visible, setVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   // const navigate = useNavigate();
@@ -84,55 +81,18 @@ export const FirstStep = () => {
           <h1 className="text-lg font-medium biorhyme">Enter password</h1>
           <div className="relative">
             <input
-              type={visible ? "text" : "password"}
+              type="password"
               placeholder="Password"
               className="w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
             />
-            <AnimatePresence>
-              {visible ? (
-                <motion.div
-                  // className="absolute top-1/2 mt-[2px] right-3 -translate-y-1/2 cursor-pointer"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0 }}
-                  transition={{ duration: 0.3 }}
-                  key="showIcon"
-                  className="inline"
-                >
-                  <BiShowAlt
-                    onClick={() => setVisible(!visible)}
-                    className="absolute top-1/2 mt-[2px] right-3 -translate-y-1/2 cursor-pointer"
-                  />
-                </motion.div>
-              ) : (
-                <motion.div
-                  // className="absolute top-1/2 mt-[2px] right-3 -translate-y-1/2 cursor-pointer"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0 }}
-                  transition={{ duration: 0.3 }}
-                  key="hideIcon"
-                  className="inline"
-                >
-                  <BiHide
-                    onClick={() => setVisible(!visible)}
-                    // initial={{ opacity: 0, scale: 0 }}
-                    // animate={{ opacity: 1, scale: 1 }}
-                    // exit={{ opacity: 0, scale: 0 }}
-                    // transition={{ duration: 0.3 }}
-                    className="absolute top-1/2 mt-[2px] right-3 -translate-y-1/2 cursor-pointer"
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </div>
         <div className="relative">
           <h1 className="text-lg font-medium biorhyme">Select a country</h1>
           <motion.div
             className="w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] transition-colors mt-1 duration-300 cursor-pointer flex justify-between"
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
+            // onHoverStart={() => setIsHovered(true)}
+            // onHoverEnd={() => setIsHovered(false)}
             onClick={toggleCountry}
             ref={triggerRef}
           >

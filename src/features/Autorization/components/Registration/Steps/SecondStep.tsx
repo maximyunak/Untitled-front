@@ -110,6 +110,22 @@ export const SecondStep: React.FC = () => {
     >
       <div className="flex flex-col gap-4">
         <div>
+          <h1 className="text-lg font-medium biorhyme">Enter first name</h1>
+          <input
+            type="text"
+            placeholder="First name"
+            className=" w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
+          />
+        </div>
+        <div>
+          <h1 className="text-lg font-medium biorhyme">Enter last name</h1>
+          <input
+            type="text"
+            placeholder="Last name"
+            className=" w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
+          />
+        </div>
+        <div>
           <h1 className="text-lg font-medium biorhyme">
             Enter your date of birth
           </h1>
@@ -120,7 +136,7 @@ export const SecondStep: React.FC = () => {
               whileTap={visible.day ? { scale: 1 } : "tap"}
               variants={mouseEventVariants}
               ref={dayRef}
-              className="bg-[#282828] rounded-xl py-3 px-5 cursor-pointer w-[81px] flex gap-3 justify-between relative"
+              className="bg-[#282828] rounded-xl py-2 px-5 cursor-pointer w-[81px] flex gap-3 justify-between relative z-50"
               onClick={() => toggleVisibility("day")}
             >
               {selectedDay}
@@ -164,7 +180,7 @@ export const SecondStep: React.FC = () => {
               whileTap={visible.month ? { scale: 1 } : "tap"}
               variants={mouseEventVariants}
               ref={monthRef}
-              className="bg-[#282828] rounded-xl py-3 px-4 cursor-pointer w-[160px] flex gap-3 justify-between relative"
+              className="bg-[#282828] rounded-xl py-2 px-4 cursor-pointer w-[160px] flex gap-3 justify-between relative z-50"
               onClick={() => toggleVisibility("month")}
             >
               {selectedMonth}
@@ -208,7 +224,7 @@ export const SecondStep: React.FC = () => {
               whileTap={visible.year ? { scale: 1 } : "tap"}
               variants={mouseEventVariants}
               ref={yearRef}
-              className="bg-[#282828] rounded-xl py-3 px-4 cursor-pointer w-[115px] flex gap-3 justify-between relative"
+              className="bg-[#282828] rounded-xl py-2 px-4 cursor-pointer w-[115px] flex gap-3 justify-between relative"
               onClick={() => toggleVisibility("year")}
             >
               {selectedYear}
