@@ -10,11 +10,16 @@ import {
   years,
   variantsStepPages,
 } from "../../../helpers/constants.ts";
-import { useAppSelector } from "../../../../../store/hooks.ts";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks.ts";
 import { selectType } from "../../../store/registrationSlice.ts";
 
 import selectIcon from "../arrowDown.svg";
 import { useNavigate } from "react-router-dom";
+import {
+  setDateOfBirth,
+  setFirstname,
+  setLastname,
+} from "../../../store/userSlice.ts";
 
 function getDaysInMonth(month: string, year: number): number {
   const monthIndex = months.indexOf(month); // Получаем индекс месяца (0-11)
@@ -23,8 +28,10 @@ function getDaysInMonth(month: string, year: number): number {
 
 export const SecondStep: React.FC = () => {
   const type = useAppSelector(selectType);
-  // const navigate = useNavigate();
-  // navigate("/registration/2");
+
+  const user = useAppSelector((state) => state.userSlice);
+
+  const dispatch = useAppDispatch();
 
   const [visible, setVisible] = useState({
     day: false,
@@ -97,6 +104,34 @@ export const SecondStep: React.FC = () => {
     }));
   };
 
+  const changeFirstname = (e: string) => {
+    dispatch(setFirstname(e));
+  };
+
+  const changeLastname = (e: string) => {
+    dispatch(setLastname(e));
+  };
+
+  useEffect(() => {
+    changeDateOfBirth();
+  }, [selectedDay, selectedMonth, selectedYear]);
+
+  useEffect(() => {
+    const date = user.dateOfBirth;
+    const [year, month, day] = date.split("-");
+
+    if (year && month && day) {
+      setSelectedDay(day);
+      setSelectedMonth(month);
+      setSelectedYear(year);
+    }
+  }, []);
+
+  const changeDateOfBirth = () => {
+    const date = `${selectedYear}-${selectedMonth}-${selectedDay}`;
+    dispatch(setDateOfBirth(date));
+  };
+
   return (
     <motion.div
       key="stepX"
@@ -114,6 +149,8 @@ export const SecondStep: React.FC = () => {
           <input
             type="text"
             placeholder="First name"
+            value={user.firstname}
+            onChange={(e) => changeFirstname(e.target.value)}
             className=" w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
           />
         </div>
@@ -122,6 +159,8 @@ export const SecondStep: React.FC = () => {
           <input
             type="text"
             placeholder="Last name"
+            value={user.lastname}
+            onChange={(e) => changeLastname(e.target.value)}
             className=" w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
           />
         </div>
@@ -224,7 +263,7 @@ export const SecondStep: React.FC = () => {
               whileTap={visible.year ? { scale: 1 } : "tap"}
               variants={mouseEventVariants}
               ref={yearRef}
-              className="bg-[#282828] rounded-xl py-2 px-4 cursor-pointer w-[115px] flex gap-3 justify-between relative"
+              className="bg-[#282828] rounded-xl py-2 px-4 cursor-pointer w-[115px] flex gap-3 justify-between relative z-50"
               onClick={() => toggleVisibility("year")}
             >
               {selectedYear}

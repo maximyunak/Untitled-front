@@ -20,8 +20,6 @@ export const Registration = () => {
   const { currentStep } = useParams();
   const type = useAppSelector(selectType);
 
-  console.log(type);
-
   const handleChangePage = (id: number) => {
     dispatch(setStep(id));
   };
@@ -43,7 +41,6 @@ export const Registration = () => {
       }
     }
   };
-  console.log(step);
 
   useEffect(() => {
     if (currentStep) {

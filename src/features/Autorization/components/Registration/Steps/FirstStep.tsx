@@ -16,11 +16,19 @@ import {
 } from "../../../store/registrationSlice.ts";
 
 import selectIcon from "../arrowDown.svg";
+import userSlice, {
+  selectCountry,
+  setCountry,
+  setEmail,
+  setPassword,
+} from "../../../store/userSlice.ts";
 
 export const FirstStep = () => {
   const type = useAppSelector(selectType);
   const visibleCounty = useAppSelector(selectVisibleCounty);
-  const [isHovered, setIsHovered] = useState(false);
+  const user = useAppSelector((state) => state.userSlice);
+  const [selectedCountry, setSelectedCountry] = useState<number>(0);
+  const currentCountry = selectCountry(useAppSelector((state) => state));
 
   // const navigate = useNavigate();
   // navigate("/registration/1");
@@ -37,6 +45,26 @@ export const FirstStep = () => {
     dispatch(setVisibleCountry(false));
   };
 
+  const changeEmail = (e: string) => {
+    dispatch(setEmail(e));
+  };
+
+  const changePassword = (e: string) => {
+    dispatch(setPassword(e));
+  };
+
+  const changeCountry = (e: number) => {
+    dispatch(setVisibleCountry(false));
+    // closeModal();
+    setSelectedCountry(e);
+    dispatch(setCountry(countries[e]));
+  };
+
+  useEffect(() => {
+    const index = countries.findIndex((country) => country === currentCountry);
+    setSelectedCountry(index !== -1 ? index : 0);
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -46,7 +74,7 @@ export const FirstStep = () => {
         triggerRef.current &&
         !triggerRef.current.contains(target)
       ) {
-        closeModal();
+        changeCountry(selectedCountry);
       }
     };
 
@@ -54,7 +82,7 @@ export const FirstStep = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [closeModal]);
+  }, [changeCountry]);
 
   return (
     <motion.div
@@ -73,6 +101,8 @@ export const FirstStep = () => {
           <input
             type="text"
             placeholder="Email"
+            value={user.email}
+            onChange={(e) => changeEmail(e.target.value)}
             className=" w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
           />
         </div>
@@ -83,6 +113,8 @@ export const FirstStep = () => {
             <input
               type="password"
               placeholder="Password"
+              value={user.password}
+              onChange={(e) => changePassword(e.target.value)}
               className="w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
             />
           </div>
@@ -96,7 +128,7 @@ export const FirstStep = () => {
             onClick={toggleCountry}
             ref={triggerRef}
           >
-            Russia
+            {countries[selectedCountry]}
             <motion.img
               src={selectIcon}
               alt=""
@@ -119,7 +151,7 @@ export const FirstStep = () => {
                   <motion.h1
                     key={index}
                     variants={selectEventVariants}
-                    onClick={closeModal}
+                    onClick={() => changeCountry(index)}
                     whileHover={"hover"}
                     whileTap={"tap"}
                     className="block cursor-pointer"

@@ -14,6 +14,7 @@ export const ThirdStep = () => {
   const type = useAppSelector(selectType);
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState("");
+  const user = useAppSelector((state) => state.userSlice);
   const [categories] = useState([
     "IT",
     "Design",
@@ -97,6 +98,8 @@ export const ThirdStep = () => {
     };
   }, [isVisible]);
 
+  console.log(user);
+
   return (
     <motion.div
       key="stepX"
@@ -126,12 +129,12 @@ export const ThirdStep = () => {
         {isVisible && (
           <motion.div
             ref={containerRef}
-            className="mt-2 bg-[#1c1c1c] rounded-xl p-2 absolute overflow-hidden"
+            className="mt-2 bg-[#1c1c1c] rounded-xl p-2 absolute overflow-auto"
             initial={{ opacity: 0, y: -10, maxHeight: 0 }}
             animate={{
               opacity: 1,
               y: 0,
-              maxHeight: showAll ? "400px" : "100px",
+              maxHeight: showAll ? "400px" : "150px",
             }}
             exit={{ opacity: 0, y: -10, maxHeight: 0 }}
             transition={{ duration: 0.3 }}
@@ -170,13 +173,25 @@ export const ThirdStep = () => {
                 <AnimatePresence>
                   {showAll && (
                     <motion.div
-                      className="bg-[#1c1c1c] rounded-xl px-2 max-h-[150px] overflow-auto"
-                      initial={{ paddingTop: 0, maxHeight: 0 }}
+                      className="bg-[#1c1c1c] rounded-xl px-2 max-h-[350px] overflow-auto"
+                      initial={{
+                        paddingTop: 0,
+                        marginBottom: 0,
+                        marginTop: 0,
+                        maxHeight: 0,
+                      }}
                       animate={{
                         paddingTop: 3,
+                        marginTop: 8,
+                        marginBottom: 2,
                         maxHeight: "200px",
                       }}
-                      exit={{ paddingTop: 0, maxHeight: 0 }}
+                      exit={{
+                        paddingTop: 0,
+                        marginTop: 0,
+                        marginBottom: 0,
+                        maxHeight: 0,
+                      }}
                       transition={{ duration: 0.3 }}
                     >
                       {categories

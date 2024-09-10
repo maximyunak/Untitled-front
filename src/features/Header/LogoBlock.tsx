@@ -16,8 +16,6 @@ export const LogoBlock: React.FC = () => {
     }
   };
 
-  // console.log(pathname);
-
   const shakeVariants = {
     hidden: { rotate: 0 },
     visible: {

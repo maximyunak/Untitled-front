@@ -17,7 +17,6 @@ export const MobileNavbar = () => {
       setWindowHeight(window.innerHeight);
     };
     window.addEventListener("resize", handleResize);
-    console.log("mobile");
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
