@@ -1,8 +1,7 @@
-import React from "react";
 import { motion, Variants } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks.ts";
-import { setStep } from "../../store/registrationSlice.ts";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { validateData, validateFields } from "../../store/userSlice.ts";
 
 const steps = [
   { id: 1, label: "Step 1" },
@@ -16,6 +15,14 @@ export const Steps = () => {
   const { step: currentStep } = useAppSelector(
     (state) => state.registrationSlice
   );
+  const {
+    emailError,
+    passwordError,
+    firstnameError,
+    lastnameError,
+    email,
+    lastname,
+  } = useAppSelector((state) => state.userSlice);
   // const params = useParams();
   // const currentStep = Number(params.currentStep);
 
@@ -30,7 +37,28 @@ export const Steps = () => {
 
   const handleClick = (id: number) => {
     // dispatch(setStep(id));
-    navigate(`/registration/${id}`);
+    if (currentStep === 1) {
+      dispatch(validateFields());
+      if (!emailError && !passwordError && email.length > 3) {
+        navigate(`/registration/${id}`);
+      }
+    }
+    if (currentStep === 2) {
+      dispatch(validateData());
+      if (
+        !firstnameError &&
+        !lastnameError &&
+        lastname.length > 3 &&
+        id !== 1
+      ) {
+        navigate(`/registration/${id}`);
+      } else if (id === 1) {
+        navigate(`/registration/${id}`);
+      }
+    }
+    if (currentStep === 3) {
+      navigate(`/registration/${id}`);
+    }
   };
 
   return (

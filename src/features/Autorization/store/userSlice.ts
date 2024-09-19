@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../store/store.ts";
+// import { countries } from "../../../shared/constants.ts";
 import { countries } from "../helpers/constants.ts";
 
 export interface IUser {
@@ -10,6 +11,11 @@ export interface IUser {
   lastname: string;
   dateOfBirth: string;
   preferences: string[];
+
+  emailError: boolean;
+  passwordError: boolean;
+  firstnameError: boolean;
+  lastnameError: boolean;
 }
 
 const initialState: IUser = {
@@ -20,6 +26,11 @@ const initialState: IUser = {
   lastname: "",
   dateOfBirth: "",
   preferences: [],
+
+  emailError: false,
+  passwordError: false,
+  firstnameError: false,
+  lastnameError: false,
 };
 
 // Создание slice
@@ -28,10 +39,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setEmail: (state, action: PayloadAction<string>) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       state.email = action.payload;
+      state.emailError = !emailRegex.test(action.payload);
     },
     setPassword: (state, action: PayloadAction<string>) => {
       state.password = action.payload;
+      state.passwordError = action.payload.trim().length === 0;
     },
     setCountry: (state, action: PayloadAction<string>) => {
       state.country = action.payload;
@@ -55,6 +69,15 @@ const userSlice = createSlice({
         (pref) => pref !== action.payload
       );
     },
+    validateFields: (state) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      state.emailError = !emailRegex.test(state.email);
+      state.passwordError = state.password.trim().length < 3;
+    },
+    validateData: (state) => {
+      state.firstnameError = state.firstname.trim().length < 3;
+      state.lastnameError = state.lastname.trim().length < 3;
+    },
   },
 });
 
@@ -68,6 +91,8 @@ export const {
   setDateOfBirth,
   addPreference,
   removePreference,
+  validateFields,
+  validateData,
 } = userSlice.actions;
 
 // Selectors
@@ -80,6 +105,10 @@ export const selectDateOfBirth = (state: RootState) =>
   state.userSlice.dateOfBirth;
 export const selectPreferences = (state: RootState) =>
   state.userSlice.preferences;
+export const selectEmailError = (state: RootState) =>
+  state.userSlice.emailError;
+export const selectPasswordError = (state: RootState) =>
+  state.userSlice.passwordError;
 
 // Экспорт reducer
 export default userSlice.reducer;

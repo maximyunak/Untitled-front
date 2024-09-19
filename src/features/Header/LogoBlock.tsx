@@ -28,19 +28,19 @@ export const LogoBlock: React.FC = () => {
   };
 
   return (
-    <Link to="/" onClick={handleClick}>
-      <motion.div
-        className="flex gap-3 items-center cursor-pointer"
-        whileHover={{
-          opacity: 0.9,
-          scale: 1.05,
-        }}
-        whileTap={{
-          scale: 0.9,
-        }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
-      >
+    <motion.div
+      className=" cursor-pointer"
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      whileHover={{
+        opacity: 0.9,
+        scale: 1.05,
+      }}
+      whileTap={{
+        scale: 0.9,
+      }}
+    >
+      <Link to="/" onClick={handleClick} className="flex gap-3 items-center">
         <motion.div
           variants={shakeVariants}
           animate={isHovered ? "visible" : "hidden"}
@@ -65,7 +65,7 @@ export const LogoBlock: React.FC = () => {
           </svg>
         </motion.div>
         <h1 className="biorhyme">Untitled</h1>
-      </motion.div>
-    </Link>
+      </Link>
+    </motion.div>
   );
 };

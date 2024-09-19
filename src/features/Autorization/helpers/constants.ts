@@ -1,3 +1,25 @@
+export const countries = ["Russia", "Island", "Germany"];
+
+export const days = Array.from({ length: 31 }, (_, i) => i + 1);
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+export const years = Array.from(
+  { length: 75 },
+  (_, i) => new Date().getFullYear() - i
+);
+
 export const variantsStepPages = {
   opened: {
     x: 0,
@@ -35,8 +57,6 @@ export const shakeVariants = {
   },
 };
 
-export const countries = ["Russia", "Island", "Germany"];
-
 export const showModalVariant = {
   initial: { scale: 0, opacity: 0, y: -40 },
   animate: { scale: 1, opacity: 1, y: 0 },
@@ -59,23 +79,3 @@ export const selectEventVariants = {
     color: "#8b74ff",
   },
 };
-
-export const days = Array.from({ length: 31 }, (_, i) => i + 1);
-export const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-export const years = Array.from(
-  { length: 75 },
-  (_, i) => new Date().getFullYear() - i
-);

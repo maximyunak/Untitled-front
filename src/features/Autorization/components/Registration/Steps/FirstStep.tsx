@@ -30,8 +30,13 @@ export const FirstStep = () => {
   const [selectedCountry, setSelectedCountry] = useState<number>(0);
   const currentCountry = selectCountry(useAppSelector((state) => state));
 
-  // const navigate = useNavigate();
-  // navigate("/registration/1");
+  const { emailError, passwordError } = useAppSelector(
+    (state) => state.userSlice
+  );
+
+  // const [emailError, setEmailError] = useState(false);
+  // const [passwordError, setPasswordError] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -41,23 +46,28 @@ export const FirstStep = () => {
   const toggleCountry = () => {
     dispatch(setVisibleCountry(!visibleCounty));
   };
-  const closeModal = () => {
-    dispatch(setVisibleCountry(false));
-  };
 
   const changeEmail = (e: string) => {
     dispatch(setEmail(e));
+    if (submitted) {
+      // validateEmail(e);
+    }
   };
 
   const changePassword = (e: string) => {
     dispatch(setPassword(e));
+    if (submitted) {
+    }
   };
 
   const changeCountry = (e: number) => {
     dispatch(setVisibleCountry(false));
-    // closeModal();
     setSelectedCountry(e);
     dispatch(setCountry(countries[e]));
+  };
+
+  const handleSubmit = () => {
+    setSubmitted(true);
   };
 
   useEffect(() => {
@@ -95,7 +105,13 @@ export const FirstStep = () => {
         duration: 0.2,
       }}
     >
-      <form className="flex flex-col gap-4">
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
         <div>
           <h1 className="text-lg font-medium biorhyme">Enter email</h1>
           <input
@@ -103,28 +119,37 @@ export const FirstStep = () => {
             placeholder="Email"
             value={user.email}
             onChange={(e) => changeEmail(e.target.value)}
-            className=" w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
+            className={`w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300 ${
+              emailError ? "border-red-600" : ""
+            }`}
           />
+          {emailError && (
+            <p className="absolute text-red-600 text-xs">Email is incorrect</p>
+          )}
         </div>
 
         <div className="">
           <h1 className="text-lg font-medium biorhyme">Enter password</h1>
-          <div className="relative">
-            <input
-              type="password"
-              placeholder="Password"
-              value={user.password}
-              onChange={(e) => changePassword(e.target.value)}
-              className="w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
-            />
-          </div>
+          <input
+            type="password"
+            placeholder="Password"
+            value={user.password}
+            onChange={(e) => changePassword(e.target.value)}
+            className={`w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300 ${
+              passwordError ? "border-red-600" : ""
+            }`}
+          />
+          {passwordError && (
+            <p className="absolute text-red-600 text-xs">
+              Password is required
+            </p>
+          )}
         </div>
+
         <div className="relative">
           <h1 className="text-lg font-medium biorhyme">Select a country</h1>
           <motion.div
             className="w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] transition-colors mt-1 duration-300 cursor-pointer flex justify-between"
-            // onHoverStart={() => setIsHovered(true)}
-            // onHoverEnd={() => setIsHovered(false)}
             onClick={toggleCountry}
             ref={triggerRef}
           >

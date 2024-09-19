@@ -12,13 +12,13 @@ import { SecondStep } from "./Steps/SecondStep.tsx";
 import { ThirdStep } from "./Steps/ThirdStep.tsx";
 import { AnimatePresence } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
+import { FinalStep } from "./Steps/FinalStep.tsx";
 
 export const Registration = () => {
   const step = useAppSelector(selectStep);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { currentStep } = useParams();
-  const type = useAppSelector(selectType);
 
   const handleChangePage = (id: number) => {
     dispatch(setStep(id));
@@ -42,6 +42,18 @@ export const Registration = () => {
     }
   };
 
+  const isEnd = false;
+
+  useEffect(() => {
+    if (currentStep) {
+      const stepNumber = Number(currentStep);
+      if (stepNumber > 3) {
+        navigate("/registration/1");
+        dispatch(setStep(1));
+      }
+    }
+  }, [currentStep, dispatch, navigate]);
+
   useEffect(() => {
     if (currentStep) {
       dispatch(setStep(Number(currentStep)));
@@ -61,20 +73,28 @@ export const Registration = () => {
   return (
     <div className="flex items-center justify-center h-screen flex-col container">
       <div className="w-[400px] p-5 rounded-3xl overflow-hidden shadow-lg bg-[#303030]">
-        <div className="h-96">
-          <h1 className="text-2xl text-center font-bold mt-2 biorhyme ">
-            Registration
-          </h1>
-          <div className="mt-4">
-            <AnimatePresence mode="wait">
-              {step === 1 && <FirstStep key="step1" />}
-              {step === 2 && <SecondStep key="step2" />}
-              {step === 3 && <ThirdStep key="step3" />}
-            </AnimatePresence>
-          </div>
+        <div>
+          {isEnd ? (
+            <>
+              <div className="h-96">
+                <h1 className="text-2xl text-center font-bold mt-2 biorhyme ">
+                  Registration
+                </h1>
+                <div className="mt-4">
+                  <AnimatePresence mode="wait">
+                    {step === 1 && <FirstStep key="step1" />}
+                    {step === 2 && <SecondStep key="step2" />}
+                    {step === 3 && <ThirdStep key="step3" />}
+                  </AnimatePresence>
+                </div>
+              </div>
+              <Steps />
+              <NavButtons />
+            </>
+          ) : (
+            <FinalStep />
+          )}
         </div>
-        <Steps />
-        <NavButtons />
       </div>
     </div>
   );

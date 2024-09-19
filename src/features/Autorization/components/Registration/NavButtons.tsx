@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks.ts";
 import {
@@ -6,13 +6,33 @@ import {
   plusStep,
   selectStep,
 } from "../../store/registrationSlice.ts";
+import {
+  selectEmailError,
+  selectPasswordError,
+  validateData,
+  validateFields,
+} from "../../store/userSlice.ts";
 import { useNavigate } from "react-router-dom";
 
 export const NavButtons = () => {
   const step = useAppSelector(selectStep);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [isEditFS, setIsEditFS] = useState(false);
+  const [isEditSS, setIsEditSS] = useState(false);
 
+  const {
+    email,
+    password,
+    emailError,
+    passwordError,
+    firstnameError,
+    lastnameError,
+    lastname,
+    firstname,
+  } = useAppSelector((state) => state.userSlice);
+
+  // Обработчик кнопки "Назад"
   const handleBackClick = () => {
     if (step > 1) {
       // dispatch(minusStep());
@@ -20,9 +40,44 @@ export const NavButtons = () => {
     }
   };
 
+  useEffect(() => {
+    // if submited first step
+    if (isEditFS) {
+      dispatch(validateFields());
+    }
+  }, [email, password]);
+
+  useEffect(() => {
+    // if submited second step
+    if (isEditSS) {
+      dispatch(validateData());
+    }
+  }, [firstname, lastname]);
+
+  // Обработчик кнопки "Продолжить"
   const handleNextClick = () => {
-    if (step < 3) {
-      // dispatch(plusStep());
+    if (step === 1) {
+      dispatch(validateFields());
+      if (
+        !emailError &&
+        !passwordError &&
+        email.length > 3 &&
+        password.length > 3
+      ) {
+        navigate(`/registration/${step + 1}`);
+      } else {
+        console.log("Email или пароль введены неправильно");
+      }
+    } else if (step === 2) {
+      setIsEditSS(true);
+      dispatch(validateData());
+      if (!firstnameError && !lastnameError && lastname.length > 3) {
+        navigate(`/registration/${step + 1}`);
+      } else {
+        console.log("err");
+      }
+    } else if (step < 3) {
+      dispatch(plusStep());
       navigate(`/registration/${step + 1}`);
     }
   };

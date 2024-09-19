@@ -19,6 +19,7 @@ import {
   setDateOfBirth,
   setFirstname,
   setLastname,
+  validateData,
 } from "../../../store/userSlice.ts";
 
 function getDaysInMonth(month: string, year: number): number {
@@ -106,10 +107,12 @@ export const SecondStep: React.FC = () => {
 
   const changeFirstname = (e: string) => {
     dispatch(setFirstname(e));
+    // dispatch(validateData());
   };
 
   const changeLastname = (e: string) => {
     dispatch(setLastname(e));
+    // dispatch(validateData());
   };
 
   useEffect(() => {
@@ -153,6 +156,11 @@ export const SecondStep: React.FC = () => {
             onChange={(e) => changeFirstname(e.target.value)}
             className=" w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
           />
+          {user.firstnameError && (
+            <p className="absolute text-red-600 text-xs">
+              The name cannot be shorter than 3 characters
+            </p>
+          )}
         </div>
         <div>
           <h1 className="text-lg font-medium biorhyme">Enter last name</h1>
@@ -163,6 +171,11 @@ export const SecondStep: React.FC = () => {
             onChange={(e) => changeLastname(e.target.value)}
             className=" w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
           />
+          {user.lastnameError && (
+            <p className="absolute text-red-600 text-xs">
+              The last name cannot be shorter than 3 characters
+            </p>
+          )}
         </div>
         <div>
           <h1 className="text-lg font-medium biorhyme">

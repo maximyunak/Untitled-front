@@ -129,7 +129,7 @@ export const ThirdStep = () => {
         {isVisible && (
           <motion.div
             ref={containerRef}
-            className="mt-2 bg-[#1c1c1c] rounded-xl p-2 absolute overflow-auto"
+            className="mt-2 bg-[#1c1c1c] rounded-xl p-2 absolute overflow-auto z-50 shadow-2xl"
             initial={{ opacity: 0, y: -10, maxHeight: 0 }}
             animate={{
               opacity: 1,
@@ -145,7 +145,7 @@ export const ThirdStep = () => {
                   key={category}
                   className={`cursor-pointer p-1 rounded ${
                     index === highlightedIndex ? "bg-[#333333]" : ""
-                  }`}
+                  } shadow-2xl`}
                   onClick={() => addCategory(category)}
                   onMouseEnter={() => handleMouseEnter(index)}
                   variants={categoryVariants}
