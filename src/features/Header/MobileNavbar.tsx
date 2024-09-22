@@ -3,7 +3,7 @@ import { LogoBlock } from "./LogoBlock.tsx";
 import { CloseMenu } from "./closeMenu.tsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
-import { openMenu, setRotation } from "./headerSlice.tsx";
+import { openMenu, setRotation } from "./store/headerSlice.tsx";
 
 import { items } from "./constants.ts";
 

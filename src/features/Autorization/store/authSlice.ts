@@ -1,24 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../../store/store.ts";
 // import { countries } from "../../../shared/constants.ts";
-import { countries } from "../helpers/constants.ts";
+import { countries } from "@shared/constants.ts";
+import { IUser } from "@shared/types/IUser.ts";
 
-export interface IUser {
-  email: string;
-  password: string;
-  country: string;
-  firstname: string;
-  lastname: string;
-  dateOfBirth: string;
-  preferences: string[];
-
+export interface IauthSlice extends IUser {
   emailError: boolean;
   passwordError: boolean;
   firstnameError: boolean;
   lastnameError: boolean;
 }
 
-const initialState: IUser = {
+const initialState: IauthSlice = {
   email: "",
   password: "",
   country: countries[0],
@@ -34,7 +27,7 @@ const initialState: IUser = {
 };
 
 // Создание slice
-const userSlice = createSlice({
+const authSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -78,6 +71,19 @@ const userSlice = createSlice({
       state.firstnameError = state.firstname.trim().length < 3;
       state.lastnameError = state.lastname.trim().length < 3;
     },
+    clearData: (state) => {
+      state.email = "";
+      state.password = "";
+      state.country = countries[0];
+      state.firstname = "";
+      state.lastname = "";
+      state.dateOfBirth = "";
+      state.preferences = [];
+      state.emailError = false;
+      state.passwordError = false;
+      state.firstnameError = false;
+      state.lastnameError = false;
+    },
   },
 });
 
@@ -93,22 +99,23 @@ export const {
   removePreference,
   validateFields,
   validateData,
-} = userSlice.actions;
+  clearData,
+} = authSlice.actions;
 
 // Selectors
-export const selectEmail = (state: RootState) => state.userSlice.email;
-export const selectPassword = (state: RootState) => state.userSlice.password;
-export const selectCountry = (state: RootState) => state.userSlice.country;
-export const selectFirstname = (state: RootState) => state.userSlice.firstname;
-export const selectLastname = (state: RootState) => state.userSlice.lastname;
+export const selectEmail = (state: RootState) => state.authSlice.email;
+export const selectPassword = (state: RootState) => state.authSlice.password;
+export const selectCountry = (state: RootState) => state.authSlice.country;
+export const selectFirstname = (state: RootState) => state.authSlice.firstname;
+export const selectLastname = (state: RootState) => state.authSlice.lastname;
 export const selectDateOfBirth = (state: RootState) =>
-  state.userSlice.dateOfBirth;
+  state.authSlice.dateOfBirth;
 export const selectPreferences = (state: RootState) =>
-  state.userSlice.preferences;
+  state.authSlice.preferences;
 export const selectEmailError = (state: RootState) =>
-  state.userSlice.emailError;
+  state.authSlice.emailError;
 export const selectPasswordError = (state: RootState) =>
-  state.userSlice.passwordError;
+  state.authSlice.passwordError;
 
 // Экспорт reducer
-export default userSlice.reducer;
+export default authSlice.reducer;

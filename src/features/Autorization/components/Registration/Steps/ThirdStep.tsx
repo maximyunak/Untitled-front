@@ -3,18 +3,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   reverseVariantsStepPages,
   variantsStepPages,
-} from "../../../helpers/constants.ts";
+} from "@shared/animationProps.ts";
 import { useAppSelector, useAppDispatch } from "../../../../../store/hooks.ts";
 import { selectType } from "../../../store/registrationSlice.ts";
 import { PreferencesTag } from "./PreferencesTag.tsx";
-import { selectPreferences, addPreference } from "../../../store/userSlice.ts";
+import { selectPreferences, addPreference } from "../../../store/authSlice.ts";
 
 export const ThirdStep = () => {
   const preferences = useAppSelector(selectPreferences);
   const type = useAppSelector(selectType);
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState("");
-  const user = useAppSelector((state) => state.userSlice);
   const [categories] = useState([
     "IT",
     "Design",
@@ -97,8 +96,6 @@ export const ThirdStep = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isVisible]);
-
-  console.log(user);
 
   return (
     <motion.div

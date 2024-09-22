@@ -1,7 +1,7 @@
 import { motion, Variants } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks.ts";
 import { useNavigate } from "react-router-dom";
-import { validateData, validateFields } from "../../store/userSlice.ts";
+import { validateData, validateFields } from "../../store/authSlice.ts";
 
 const steps = [
   { id: 1, label: "Step 1" },
@@ -22,7 +22,7 @@ export const Steps = () => {
     lastnameError,
     email,
     lastname,
-  } = useAppSelector((state) => state.userSlice);
+  } = useAppSelector((state) => state.authSlice);
   // const params = useParams();
   // const currentStep = Number(params.currentStep);
 

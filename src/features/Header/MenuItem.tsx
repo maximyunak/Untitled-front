@@ -1,7 +1,7 @@
 import React from "react";
 import { MotionLink } from "./constants.ts";
 import { useAppDispatch } from "../../store/hooks.ts";
-import { openMenu } from "./headerSlice.tsx";
+import { openMenu } from "./store/headerSlice.tsx";
 
 interface IProps {
   item: string;

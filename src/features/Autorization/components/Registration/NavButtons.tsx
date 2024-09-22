@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks.ts";
-import {
-  minusStep,
-  plusStep,
-  selectStep,
-} from "../../store/registrationSlice.ts";
-import {
-  selectEmailError,
-  selectPasswordError,
-  validateData,
-  validateFields,
-} from "../../store/userSlice.ts";
+import { plusStep, selectStep } from "../../store/registrationSlice.ts";
+import { validateData, validateFields } from "../../store/authSlice.ts";
 import { useNavigate } from "react-router-dom";
+import { authApi } from "@shared/api/authApi.ts";
 
 export const NavButtons = () => {
   const step = useAppSelector(selectStep);
@@ -21,6 +13,9 @@ export const NavButtons = () => {
   const [isEditFS, setIsEditFS] = useState(false);
   const [isEditSS, setIsEditSS] = useState(false);
 
+  const [registrationUser, {}] = authApi.useRegistrationUserMutation();
+
+  // console.log(isSuccess, isError, error?.data?.message);
   const {
     email,
     password,
@@ -30,7 +25,10 @@ export const NavButtons = () => {
     lastnameError,
     lastname,
     firstname,
-  } = useAppSelector((state) => state.userSlice);
+    dateOfBirth,
+    preferences,
+    country,
+  } = useAppSelector((state) => state.authSlice);
 
   // Обработчик кнопки "Назад"
   const handleBackClick = () => {
@@ -55,8 +53,9 @@ export const NavButtons = () => {
   }, [firstname, lastname]);
 
   // Обработчик кнопки "Продолжить"
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (step === 1) {
+      setIsEditFS(true);
       dispatch(validateFields());
       if (
         !emailError &&
@@ -79,6 +78,30 @@ export const NavButtons = () => {
     } else if (step < 3) {
       dispatch(plusStep());
       navigate(`/registration/${step + 1}`);
+    } else if (step === 3) {
+      if (!emailError && !passwordError && !firstnameError && !lastnameError) {
+        try {
+          const user = {
+            email,
+            password,
+            country,
+            firstname,
+            lastname,
+            dateOfBirth,
+            preferences,
+          };
+          const data = await registrationUser(user).unwrap();
+
+          console.log(data);
+
+          if (data.accessToken) {
+            localStorage.setItem("token", data.accessToken);
+            navigate("/registration/4");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
   };
 

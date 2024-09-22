@@ -6,21 +6,18 @@ import {
   selectEventVariants,
   shakeVariants,
   showModalVariant,
-  months,
-  years,
   variantsStepPages,
-} from "../../../helpers/constants.ts";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks.ts";
+} from "@shared/animationProps.ts";
+import { useAppDispatch, useAppSelector } from "@hooks";
 import { selectType } from "../../../store/registrationSlice.ts";
 
 import selectIcon from "../arrowDown.svg";
-import { useNavigate } from "react-router-dom";
 import {
   setDateOfBirth,
   setFirstname,
   setLastname,
-  validateData,
-} from "../../../store/userSlice.ts";
+} from "../../../store/authSlice.ts";
+import { months, years } from "@shared/constants.ts";
 
 function getDaysInMonth(month: string, year: number): number {
   const monthIndex = months.indexOf(month); // Получаем индекс месяца (0-11)
@@ -30,7 +27,7 @@ function getDaysInMonth(month: string, year: number): number {
 export const SecondStep: React.FC = () => {
   const type = useAppSelector(selectType);
 
-  const user = useAppSelector((state) => state.userSlice);
+  const user = useAppSelector((state) => state.authSlice);
 
   const dispatch = useAppDispatch();
 

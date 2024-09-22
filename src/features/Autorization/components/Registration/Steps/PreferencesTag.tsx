@@ -1,6 +1,6 @@
 import React from "react";
-import { useAppDispatch } from "../../../../../store/hooks";
-import { removePreference } from "../../../store/userSlice";
+import { useAppDispatch } from "@hooks";
+import { removePreference } from "../../../store/authSlice";
 
 interface PreferencesTagProps {
   text: string;

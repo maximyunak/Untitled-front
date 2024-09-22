@@ -4,11 +4,10 @@ import {
   reverseVariantsStepPages,
   showModalVariant,
   variantsStepPages,
-  countries,
   shakeVariants,
   selectEventVariants,
-} from "../../../helpers/constants.ts";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks.ts";
+} from "@shared/animationProps.ts";
+import { useAppDispatch, useAppSelector } from "@hooks";
 import {
   selectType,
   selectVisibleCounty,
@@ -16,27 +15,22 @@ import {
 } from "../../../store/registrationSlice.ts";
 
 import selectIcon from "../arrowDown.svg";
-import userSlice, {
-  selectCountry,
-  setCountry,
-  setEmail,
-  setPassword,
-} from "../../../store/userSlice.ts";
+import { setCountry, setEmail, setPassword } from "../../../store/authSlice.ts";
+import { countries } from "@shared/constants.ts";
 
 export const FirstStep = () => {
   const type = useAppSelector(selectType);
   const visibleCounty = useAppSelector(selectVisibleCounty);
-  const user = useAppSelector((state) => state.userSlice);
+  const user = useAppSelector((state) => state.authSlice);
   const [selectedCountry, setSelectedCountry] = useState<number>(0);
-  const currentCountry = selectCountry(useAppSelector((state) => state));
+  // const currentCountry = selectCountry(useAppSelector((state) => state));
 
   const { emailError, passwordError } = useAppSelector(
-    (state) => state.userSlice
+    (state) => state.authSlice
   );
 
   // const [emailError, setEmailError] = useState(false);
   // const [passwordError, setPasswordError] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -49,15 +43,10 @@ export const FirstStep = () => {
 
   const changeEmail = (e: string) => {
     dispatch(setEmail(e));
-    if (submitted) {
-      // validateEmail(e);
-    }
   };
 
   const changePassword = (e: string) => {
     dispatch(setPassword(e));
-    if (submitted) {
-    }
   };
 
   const changeCountry = (e: number) => {
@@ -66,12 +55,8 @@ export const FirstStep = () => {
     dispatch(setCountry(countries[e]));
   };
 
-  const handleSubmit = () => {
-    setSubmitted(true);
-  };
-
   useEffect(() => {
-    const index = countries.findIndex((country) => country === currentCountry);
+    const index = countries.findIndex((country) => country === user.country);
     setSelectedCountry(index !== -1 ? index : 0);
   }, []);
 
@@ -109,7 +94,6 @@ export const FirstStep = () => {
         className="flex flex-col gap-4"
         onSubmit={(e) => {
           e.preventDefault();
-          handleSubmit();
         }}
       >
         <div>

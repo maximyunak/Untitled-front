@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../store/hooks.ts";
-import { openMenu } from "./headerSlice.tsx";
+import { openMenu } from "./store/headerSlice.tsx";
 
 export const LogoBlock: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -64,7 +64,7 @@ export const LogoBlock: React.FC = () => {
             />
           </svg>
         </motion.div>
-        <h1 className="biorhyme">Untitled</h1>
+        <h1 className="biorhyme text-xl">Untitled</h1>
       </Link>
     </motion.div>
   );

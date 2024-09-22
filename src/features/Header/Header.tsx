@@ -1,27 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CloseMenu } from "./closeMenu.tsx";
-import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
-import { MenuItem } from "./MenuItem.tsx";
-import { openMenu, setIsOpenProfile, setRotation } from "./headerSlice.tsx";
-
-import { LogoBlock } from "./LogoBlock.tsx";
-import { items } from "./constants.ts";
-
-import ArrowDown from "./arrowDown.svg";
-
+import { useAppDispatch, useAppSelector } from "@hooks";
+import { authApi } from "@shared/api/authApi.ts";
+import { Link } from "react-router-dom";
 import { RiArrowDownSLine } from "react-icons/ri";
+import { setIsOpenProfile } from "./store/headerSlice.tsx";
 import { ProfileModal } from "./ProfileModal.tsx";
 import { MobileNavbar } from "./MobileNavbar.tsx";
+import { LogoBlock } from "./LogoBlock.tsx";
+import { items } from "./constants.ts";
+import { MenuItem } from "./MenuItem.tsx";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 export const Header: React.FC = () => {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-  // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const token = localStorage.getItem("token");
 
-  // const isMobile = windowWidth < 780;
+  const { data: user, isLoading } = authApi.useFetchUserQuery(
+    token ? undefined : skipToken
+  );
 
   const dispatch = useAppDispatch();
-
   const { opened, rotation, isOpenProfile } = useAppSelector(
     (state) => state.headerSlice
   );
@@ -30,39 +29,11 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      // setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const variants = {
-    open: {
-      clipPath: `circle(${windowHeight * 2 + 200}px at 0px 0px)`,
-      transition: {
-        type: "spring",
-        stiffness: 20,
-        restDelta: 2,
-        duration: 0.1,
-      },
-    },
-    closed: {
-      clipPath: "circle(0px at 0px 0px)",
-      transition: {
-        delay: 0.55,
-        type: "spring",
-        stiffness: 400,
-        damping: 40,
-        duration: 0.1,
-      },
-    },
-  };
-
-  // const onClose = () => {
-  //   dispatch(openMenu(!opened));
-  //   dispatch(setRotation(rotation + 720));
-  // };
 
   const openProfile = () => {
     dispatch(setIsOpenProfile(!isOpenProfile));
@@ -73,10 +44,10 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <div className="fixed w-full z-50">
+    <div className="fixed w-full z-50 text-lg">
       <MobileNavbar />
 
-      <nav className=" py-2 h-14 items-center flex bg-white filter-m text-black max-[780px]:hidden">
+      <nav className="py-2 h-14 items-center flex bg-white filter-m text-black max-[780px]:hidden">
         <div className="container flex gap-10 items-center justify-between">
           <div className="flex items-center gap-32 max-[780px]:flex-col max-[780px]:items-start max-[780px]:gap-10">
             <LogoBlock />
@@ -92,40 +63,54 @@ export const Header: React.FC = () => {
             </ul>
           </div>
 
-          {/* <div className="flex gap-5 max-[780px]:flex-col max-[780px]:items-start">
-            <button>Login</button>
-            <button>Sign up</button>
-          </div> */}
-
-          <div ref={avaRef} className="relative flex gap-1 items-center">
-            <motion.div
-              whileHover={{
-                scale: 1.05,
-              }}
-              whileTap={{
-                scale: 0.95,
-              }}
-              onClick={openProfile}
-              className="flex gap-2 items-center cursor-pointer"
-            >
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFj4CCDNn5bpSqyA3XD3KRHjgBd73ZOmFYTw&s"
-                alt="avatar"
-                className=" h-10 rounded-full "
-              />
-              <RiArrowDownSLine
-                size={25}
-                className={`${
-                  isOpenProfile && "rotate-180"
-                } transition-transform`}
-              />
-            </motion.div>
-            <AnimatePresence>
-              {isOpenProfile && (
-                <ProfileModal closeModal={closeModal} avaRef={avaRef} />
-              )}
-            </AnimatePresence>
-          </div>
+          {user ? (
+            <div ref={avaRef} className="relative flex gap-1 items-center">
+              <motion.div
+                whileHover={{
+                  scale: 1.05,
+                }}
+                whileTap={{
+                  scale: 0.95,
+                }}
+                onClick={openProfile}
+                className="flex gap-2 items-center cursor-pointer"
+              >
+                {isLoading ? (
+                  <h1>Loading...</h1>
+                ) : (
+                  <h1>
+                    {user?.firstname} {user?.lastname}
+                  </h1>
+                )}
+                <RiArrowDownSLine
+                  size={25}
+                  className={`${
+                    isOpenProfile && "rotate-180"
+                  } transition-transform`}
+                />
+              </motion.div>
+              <AnimatePresence>
+                {isOpenProfile && (
+                  <ProfileModal closeModal={closeModal} avaRef={avaRef} />
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <div className="flex gap-4">
+              <Link
+                to="/login"
+                className="border rounded-3xl px-5 py-1 hover:border-gray-400 transition duration-300"
+              >
+                Login
+              </Link>
+              <Link
+                to="/registration"
+                className="rounded-3xl px-5 py-1 bg-customPurple text-white hover:opacity-80  transition duration-300"
+              >
+                Sign up
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
     </div>
