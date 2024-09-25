@@ -5,7 +5,8 @@
       "@hooks": ["store/hooks.ts"],
       "@features/*": ["features/*"],
       "@shared/*": ["shared/*"],
-      "@store/*": ["store/*"]
+      "@store/*": ["store/*"],
+      "@images/*": ["shared/assets/*"]
       // Add more paths as needed
     },
     "composite": true,
@@ -27,6 +28,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src", "src/@types/assets.d.ts"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist", "tmp"]
 }

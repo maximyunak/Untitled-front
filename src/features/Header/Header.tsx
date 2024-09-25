@@ -49,7 +49,7 @@ export const Header: React.FC = () => {
 
       <nav className="py-2 h-14 items-center flex bg-white filter-m text-black max-[780px]:hidden">
         <div className="container flex gap-10 items-center justify-between">
-          <div className="flex items-center gap-32 max-[780px]:flex-col max-[780px]:items-start max-[780px]:gap-10">
+          <div className="flex items-center gap-32 max-[780px]:flex-col max-[780px]:items-start max-[1030px]:gap-10">
             <LogoBlock />
             <ul className="flex gap-10 max-[780px]:flex-col">
               {items.map((el, i) => (

@@ -20,21 +20,21 @@ export const authApi = createApi({
       providesTags: () => ["Users"],
     }),
     fetchUser: build.query<IUser, void>({
-      query: (): FetchArgs | typeof skipToken => {
+      query: (arg: void): string | FetchArgs => {
         const token = localStorage.getItem("token");
-
-        // Если токен отсутствует, запрос не выполняется
-        if (!token) return skipToken;
-
+        if (!token) {
+          return "getUser"; // Просто возвращаем URL, если токена нет
+        }
         return {
           url: "getUser",
           headers: {
-            Authorization: `Bearer ${token}`, // Передача токена в заголовке
+            Authorization: `Bearer ${token}`,
           },
         };
       },
       providesTags: () => ["user"],
     }),
+
     registrationUser: build.mutation({
       query: (user) => ({
         url: "/registration",

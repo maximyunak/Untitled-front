@@ -7,6 +7,7 @@ import { BiPalette } from "react-icons/bi";
 import { authApi } from "@shared/api/authApi";
 import { useAppDispatch } from "@hooks";
 import { logoutUser } from "@store/userSlice";
+import { setIsOpenProfile } from "./store/headerSlice";
 
 interface IProps {
   closeModal: () => void;
@@ -17,6 +18,7 @@ export const ProfileModal: React.FC<IProps> = ({ closeModal, avaRef }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const { data: user, refetch } = authApi.useFetchUserQuery();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -40,6 +42,7 @@ export const ProfileModal: React.FC<IProps> = ({ closeModal, avaRef }) => {
   const handleLogOut = async () => {
     // dispatch(logoutUser());
     refetch();
+    dispatch(setIsOpenProfile(false));
     localStorage.removeItem("token");
   };
 

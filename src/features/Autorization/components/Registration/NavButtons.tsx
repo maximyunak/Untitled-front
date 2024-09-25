@@ -14,6 +14,7 @@ export const NavButtons = () => {
   const [isEditSS, setIsEditSS] = useState(false);
 
   const [registrationUser, {}] = authApi.useRegistrationUserMutation();
+  const { refetch } = authApi.useFetchUserQuery();
 
   // console.log(isSuccess, isError, error?.data?.message);
   const {
@@ -96,6 +97,7 @@ export const NavButtons = () => {
 
           if (data.accessToken) {
             localStorage.setItem("token", data.accessToken);
+            refetch();
             navigate("/registration/4");
           }
         } catch (error) {
