@@ -5,8 +5,7 @@
       "@hooks": ["store/hooks.ts"],
       "@features/*": ["features/*"],
       "@shared/*": ["shared/*"],
-      "@store/*": ["store/*"],
-      "@images/*": ["shared/assets/*"]
+      "@store/*": ["store/*"]
       // Add more paths as needed
     },
     "composite": true,

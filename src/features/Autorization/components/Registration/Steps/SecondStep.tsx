@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   mouseEventVariants,
   reverseVariantsStepPages,
@@ -7,17 +7,14 @@ import {
   shakeVariants,
   showModalVariant,
   variantsStepPages,
-} from "@shared/animationProps.ts";
-import { useAppDispatch, useAppSelector } from "@hooks";
-import { selectType } from "../../../store/registrationSlice.ts";
+} from '@shared/animationProps.ts';
+import { useAppDispatch, useAppSelector } from '@hooks';
+import { selectType } from '../../../store/registrationSlice.ts';
 
-import selectIcon from "../arrowDown.svg";
-import {
-  setDateOfBirth,
-  setFirstname,
-  setLastname,
-} from "../../../store/authSlice.ts";
-import { months, years } from "@shared/constants.ts";
+import selectIcon from '../arrowDown.svg';
+import { setDateOfBirth, setFirstname, setLastname } from '../../../store/authSlice.ts';
+import { months, years } from '@shared/constants.ts';
+import { MyTitle } from '@shared/UI/MyTitle.tsx';
 
 function getDaysInMonth(month: string, year: number): number {
   const monthIndex = months.indexOf(month); // Получаем индекс месяца (0-11)
@@ -38,7 +35,7 @@ export const SecondStep: React.FC = () => {
   });
 
   const [selectedDay, setSelectedDay] = useState<number>(1);
-  const [selectedMonth, setSelectedMonth] = useState<string>("January");
+  const [selectedMonth, setSelectedMonth] = useState<string>('January');
   const [selectedYear, setSelectedYear] = useState<number>(2000);
   const [daysInMonth, setDaysInMonth] = useState<number[]>([]);
 
@@ -70,19 +67,16 @@ export const SecondStep: React.FC = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
-  const handleOptionClick = (
-    field: keyof typeof visible,
-    value: number | string
-  ) => {
-    if (field === "day") setSelectedDay(value as number);
-    if (field === "month") setSelectedMonth(value as string);
-    if (field === "year") setSelectedYear(value as number);
+  const handleOptionClick = (field: keyof typeof visible, value: number | string) => {
+    if (field === 'day') setSelectedDay(value as number);
+    if (field === 'month') setSelectedMonth(value as string);
+    if (field === 'year') setSelectedYear(value as number);
     handleCloseModals();
   };
 
@@ -96,9 +90,9 @@ export const SecondStep: React.FC = () => {
 
   const toggleVisibility = (field: keyof typeof visible) => {
     setVisible((prevState) => ({
-      day: field === "day" ? !prevState.day : false,
-      month: field === "month" ? !prevState.month : false,
-      year: field === "year" ? !prevState.year : false,
+      day: field === 'day' ? !prevState.day : false,
+      month: field === 'month' ? !prevState.month : false,
+      year: field === 'year' ? !prevState.year : false,
     }));
   };
 
@@ -118,7 +112,7 @@ export const SecondStep: React.FC = () => {
 
   useEffect(() => {
     const date = user.dateOfBirth;
-    const [year, month, day] = date.split("-");
+    const [year, month, day] = date.split('-');
 
     if (year && month && day) {
       setSelectedDay(day);
@@ -136,16 +130,16 @@ export const SecondStep: React.FC = () => {
     <motion.div
       key="stepX"
       variants={type === 0 ? variantsStepPages : reverseVariantsStepPages}
-      animate={"opened"}
-      initial={"initial"}
-      exit={"closed"}
+      animate={'opened'}
+      initial={'initial'}
+      exit={'closed'}
       transition={{
         duration: 0.2,
       }}
     >
       <div className="flex flex-col gap-4">
         <div>
-          <h1 className="text-lg font-medium biorhyme">Enter first name</h1>
+          <MyTitle>Enter first name</MyTitle>
           <input
             type="text"
             placeholder="First name"
@@ -160,7 +154,7 @@ export const SecondStep: React.FC = () => {
           )}
         </div>
         <div>
-          <h1 className="text-lg font-medium biorhyme">Enter last name</h1>
+          <MyTitle>Enter last name</MyTitle>
           <input
             type="text"
             placeholder="Last name"
@@ -175,18 +169,16 @@ export const SecondStep: React.FC = () => {
           )}
         </div>
         <div>
-          <h1 className="text-lg font-medium biorhyme">
-            Enter your date of birth
-          </h1>
+          <MyTitle>Enter your date of birth</MyTitle>
           <div className="flex gap-2 mt-2 items-center w-full justify-between">
             {/* Day Selector */}
             <motion.div
-              whileHover={visible.day ? { scale: 1 } : "hover"}
-              whileTap={visible.day ? { scale: 1 } : "tap"}
+              whileHover={visible.day ? { scale: 1 } : 'hover'}
+              whileTap={visible.day ? { scale: 1 } : 'tap'}
               variants={mouseEventVariants}
               ref={dayRef}
               className="bg-[#282828] rounded-xl py-2 px-5 cursor-pointer w-[81px] flex gap-3 justify-between relative z-50"
-              onClick={() => toggleVisibility("day")}
+              onClick={() => toggleVisibility('day')}
             >
               {selectedDay}
               <motion.img
@@ -194,7 +186,7 @@ export const SecondStep: React.FC = () => {
                 alt=""
                 className="invert w-3"
                 variants={shakeVariants}
-                animate={visible.day ? "visible" : { rotate: 0 }}
+                animate={visible.day ? 'visible' : { rotate: 0 }}
               />
               <AnimatePresence>
                 {visible.day && (
@@ -209,10 +201,10 @@ export const SecondStep: React.FC = () => {
                     {daysInMonth.map((day) => (
                       <motion.div
                         key={day}
-                        onClick={() => handleOptionClick("day", day)}
+                        onClick={() => handleOptionClick('day', day)}
                         variants={selectEventVariants}
-                        whileHover={"hover"}
-                        whileTap={"tap"}
+                        whileHover={'hover'}
+                        whileTap={'tap'}
                         className="cursor-pointer"
                       >
                         {day}
@@ -225,12 +217,12 @@ export const SecondStep: React.FC = () => {
 
             {/* Month Selector */}
             <motion.div
-              whileHover={visible.month ? { scale: 1 } : "hover"}
-              whileTap={visible.month ? { scale: 1 } : "tap"}
+              whileHover={visible.month ? { scale: 1 } : 'hover'}
+              whileTap={visible.month ? { scale: 1 } : 'tap'}
               variants={mouseEventVariants}
               ref={monthRef}
               className="bg-[#282828] rounded-xl py-2 px-4 cursor-pointer w-[160px] flex gap-3 justify-between relative z-50"
-              onClick={() => toggleVisibility("month")}
+              onClick={() => toggleVisibility('month')}
             >
               {selectedMonth}
               <motion.img
@@ -238,7 +230,7 @@ export const SecondStep: React.FC = () => {
                 alt=""
                 className="invert w-3"
                 variants={shakeVariants}
-                animate={visible.month ? "visible" : { rotate: 0 }}
+                animate={visible.month ? 'visible' : { rotate: 0 }}
               />
               <AnimatePresence>
                 {visible.month && (
@@ -253,10 +245,10 @@ export const SecondStep: React.FC = () => {
                     {months.map((month) => (
                       <motion.div
                         key={month}
-                        onClick={() => handleOptionClick("month", month)}
+                        onClick={() => handleOptionClick('month', month)}
                         variants={selectEventVariants}
-                        whileHover={"hover"}
-                        whileTap={"tap"}
+                        whileHover={'hover'}
+                        whileTap={'tap'}
                         className="cursor-pointer"
                       >
                         {month}
@@ -269,12 +261,12 @@ export const SecondStep: React.FC = () => {
 
             {/* Year Selector */}
             <motion.div
-              whileHover={visible.year ? { scale: 1 } : "hover"}
-              whileTap={visible.year ? { scale: 1 } : "tap"}
+              whileHover={visible.year ? { scale: 1 } : 'hover'}
+              whileTap={visible.year ? { scale: 1 } : 'tap'}
               variants={mouseEventVariants}
               ref={yearRef}
               className="bg-[#282828] rounded-xl py-2 px-4 cursor-pointer w-[115px] flex gap-3 justify-between relative z-50"
-              onClick={() => toggleVisibility("year")}
+              onClick={() => toggleVisibility('year')}
             >
               {selectedYear}
               <motion.img
@@ -282,7 +274,7 @@ export const SecondStep: React.FC = () => {
                 alt=""
                 className="invert w-3"
                 variants={shakeVariants}
-                animate={visible.year ? "visible" : { rotate: 0 }}
+                animate={visible.year ? 'visible' : { rotate: 0 }}
               />
               <AnimatePresence>
                 {visible.year && (
@@ -297,10 +289,10 @@ export const SecondStep: React.FC = () => {
                     {years.map((year) => (
                       <motion.div
                         key={year}
-                        onClick={() => handleOptionClick("year", year)}
+                        onClick={() => handleOptionClick('year', year)}
                         variants={selectEventVariants}
-                        whileHover={"hover"}
-                        whileTap={"tap"}
+                        whileHover={'hover'}
+                        whileTap={'tap'}
                         className="cursor-pointer"
                       >
                         {year}

@@ -1,2 +1,1 @@
-//@ts-ignore
-export { BrowseCategory } from "./components/BrowseCategory";
+export { BrowseCategory } from './components/BrowseCategory';

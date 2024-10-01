@@ -1,18 +1,19 @@
-import { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { ReactNode } from 'react';
 
 interface MyBtnProps {
   children: ReactNode;
-  href: string;
+  type?: string;
 }
 
-export const MyButton: React.FC<MyBtnProps> = ({ children, href }) => {
+export const MyButton: React.FC<MyBtnProps> = ({ children, type }) => {
   return (
-    <Link
-      className="rounded-2xl bg-customPurple px-3 py-1 text-sm font-medium"
-      to={href}
+    <button
+      className={`rounded-2xl border border-transparent ${
+        type === 'outline' ? 'border-customPurple' : 'bg-customPurple'
+      } px-3 py-1 text-sm font-medium`}
+      type="button"
     >
       {children}
-    </Link>
+    </button>
   );
 };
