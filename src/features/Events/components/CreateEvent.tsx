@@ -1,14 +1,20 @@
 import { countries } from '@shared/constants'; // Предполагаю, что `countries` — это массив стран
-import { useEffect, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { MySelect } from '@shared/UI/MySelect'; // Ваш компонент для выбора страны
 import { MyTags } from '@shared/UI/MyTags'; // Компонент с тегами (категориями)
-import { useAppDispatch, useAppSelector } from '@hooks'; // Ваши хуки для работы с Redux
-import { removeCategory, setCategory } from '../store/eventSlice'; // Экшен для удаления категории
 import { MyTitle } from '@shared/UI/MyTitle';
 import { authApi } from '@shared/api/authApi';
 import { eventApi } from '@shared/api/eventApi';
+import { motion } from 'framer-motion';
+import { opacityVariant, showModalVariant } from '@shared/animationProps';
+import { useClickOutside } from '@shared/hooks/useClickOutside';
 
-export const CreateEvent = () => {
+interface ICreateEventProps {
+  closeModal: () => void;
+  containerRef: React.RefObject<HTMLElement>;
+}
+
+export const CreateEvent: FC<ICreateEventProps> = ({ closeModal, containerRef }) => {
   const { data: user } = authApi.useFetchUserQuery();
   const [createEvent, { isError }] = eventApi.useCreateEventMutation();
 
@@ -21,6 +27,10 @@ export const CreateEvent = () => {
   const [descError, setDescError] = useState(false);
 
   const [categories, setCategories] = useState<string[]>([]);
+
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside([containerRef, modalRef], closeModal);
 
   const clearData = () => {
     setVisibleCounty(false);
@@ -64,16 +74,17 @@ export const CreateEvent = () => {
       setDescError(false);
     }
 
-    if (user) {
-      const data = {
-        email: user.email,
-        title: eventTitle,
-        description: eventDescription,
-        country: countries[selectedCountry],
-        eventTypes: categories,
-      };
+    if (user && eventTitle && eventDescription) {
       try {
+        const data = {
+          email: user.email,
+          title: eventTitle,
+          description: eventDescription,
+          country: countries[selectedCountry],
+          eventTypes: categories,
+        };
         createEvent(data);
+        closeModal();
         clearData();
       } catch (error) {
         console.log(error);
@@ -83,8 +94,21 @@ export const CreateEvent = () => {
 
   return (
     // <div className="min-w-screen min-h-screen bg-[#282828] text-white text-base absolute top-0 left-0">
-    <div className="min-w-screen min-h-screen bg-[#282828] text-white text-base absolute top-0 left-0 flex items-center justify-center flex-col container">
-      <div className="w-[400px] p-5 rounded-3xl overflow-hiden shadow-lg bg-[#303030]">
+    <motion.div
+      initial={'initial'}
+      exit={'initial'}
+      animate={'animate'}
+      variants={opacityVariant}
+      className="min-w-screen min-h-screen z-[500] bg-[#28282890] text-white text-base fixed top-0 left-0 flex items-center justify-center flex-col container"
+    >
+      <motion.div
+        ref={modalRef}
+        initial={'initial'}
+        animate={'animate'}
+        exit={'initial'}
+        variants={showModalVariant}
+        className="w-[400px] p-5 rounded-3xl overflow-hiden shadow-xl bg-[#303030]"
+      >
         <h1 className="text-2xl text-center font-bold mt-2 biorhyme">Create Event</h1>
 
         {/* Заголовок события */}
@@ -128,21 +152,29 @@ export const CreateEvent = () => {
         <MyTitle>Enter event Category</MyTitle>
         <MyTags
           selectedItems={categories}
-          placeholder="enter event categories up to 3"
+          placeholder="Enter event categories up to 3"
           handleRemoveCategory={handleRemoveCategory}
           handleAddCategory={handleAddCategory}
           type="string"
         />
 
         {/* Кнопка для создания события */}
-        <button
-          className="mt-16 rounded-xl bg-customPurple px-3 py-2 text-base w-full font-medium"
-          onClick={handleCreate}
-        >
-          Create
-        </button>
-      </div>
-    </div>
+        <div className="flex gap-2">
+          <button
+            className="mt-16 rounded-xl bg-white px-3 py-2 text-black text-base"
+            onClick={closeModal}
+          >
+            Close
+          </button>
+          <button
+            className="mt-16 rounded-xl bg-customPurple px-3 py-2 text-base w-full font-medium"
+            onClick={handleCreate}
+          >
+            Create
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
     // </div>
   );
 };

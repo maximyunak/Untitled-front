@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Header } from './features/Header/Header.tsx';
 import { useAppSelector } from './store/hooks.ts';
+// import { Sidebar } from '@features/Sidebar/index.ts';
 
 interface LayoutProps {
   children: ReactNode;
@@ -17,7 +18,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       } transition text-xl `}
     >
       <Header />
-      <div className="container">
+      <div className="container flex gap-4 justify-center">
+        {/* <Sidebar /> */}
         <main className="mt-14">{children}</main>
       </div>
       {/* <Footer /> */}

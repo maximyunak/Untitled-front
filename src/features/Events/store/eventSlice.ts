@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface IEventSlice {
   categories: string[];
+  countries: string[];
 }
 
 const initialState: IEventSlice = {
   categories: [],
+  countries: [],
 };
 
 // Создание slice

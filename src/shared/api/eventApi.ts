@@ -19,6 +19,9 @@ export const eventApi = createApi({
     fetchEvents: build.query<IEventRes, void>({
       query: () => ({
         url: '/events',
+        params: {
+          // eventTypes:
+        },
       }),
       providesTags: () => ['Events'],
     }),

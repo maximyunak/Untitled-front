@@ -25,24 +25,17 @@ export const FirstStep = () => {
   const visibleCounty = useAppSelector(selectVisibleCounty);
   const user = useAppSelector((state) => state.authSlice);
   const [selectedCountry, setSelectedCountry] = useState<number>(0);
-  // const currentCountry = selectCountry(useAppSelector((state) => state));
 
   const { emailError, passwordError } = useAppSelector((state) => state.authSlice);
 
-  // const [emailError, setEmailError] = useState(false);
-  // const [passwordError, setPasswordError] = useState(false);
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
-
   const dispatch = useAppDispatch();
-
-  const toggleCountry = () => {
-    dispatch(setVisibleCountry(!visibleCounty));
-  };
 
   const changeEmail = (e: string) => {
     dispatch(setEmail(e));
+  };
+
+  const closeModal = (b: boolean = true) => {
+    dispatch(setVisibleCountry(b));
   };
 
   const changePassword = (e: string) => {
@@ -59,25 +52,6 @@ export const FirstStep = () => {
     const index = countries.findIndex((country) => country === user.country);
     setSelectedCountry(index !== -1 ? index : 0);
   }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(target) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(target)
-      ) {
-        changeCountry(selectedCountry);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [changeCountry]);
 
   return (
     <motion.div
@@ -103,7 +77,7 @@ export const FirstStep = () => {
             placeholder="Email"
             value={user.email}
             onChange={(e) => changeEmail(e.target.value)}
-            className={`w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300 ${
+            className={`w-full border border-transparent py-1 px-3 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300 ${
               emailError ? 'border-red-600' : ''
             }`}
           />
@@ -130,7 +104,7 @@ export const FirstStep = () => {
           isVisible={visibleCounty} // Видимость компонента выбора страны
           selected={selectedCountry} // Текущая выбранная страна
           setItem={changeCountry} // Обработчик выбора страны
-          toggleVisible={toggleCountry} // Обработчик показа/скрытия списка стран
+          toggleVisible={closeModal} // Обработчик показа/скрытия списка стран
         />
       </form>
     </motion.div>

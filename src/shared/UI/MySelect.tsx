@@ -3,6 +3,7 @@ import selectIcon from '@shared/assets/icons/arrowDown.svg';
 import { selectEventVariants, shakeVariants, showModalVariant } from '@shared/animationProps';
 import { FC, useEffect, useRef } from 'react';
 import { MyTitle } from './MyTitle';
+import { useClickOutside } from '@shared/hooks/useClickOutside';
 
 interface IMySelect {
   title?: string;
@@ -24,23 +25,11 @@ export const MySelect: FC<IMySelect> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as HTMLElement) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(event.target as HTMLElement)
-      ) {
-        toggleVisible(false);
-      }
-    };
+  const closeModal = () => {
+    toggleVisible(false);
+  };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [toggleVisible]);
+  useClickOutside([modalRef, triggerRef], closeModal);
 
   return (
     <div className="relative" ref={modalRef}>

@@ -69,6 +69,21 @@ export const selectEventVariants = {
     x: 5,
   },
   tap: {
-    color: "#8b74ff",
+    color: '#8b74ff',
+  },
+};
+
+export const opacityVariant = {
+  animate: {
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+    },
+  },
+  initial: {
+    opacity: 0,
+    transition: {
+      duration: 0.2,
+    },
   },
 };

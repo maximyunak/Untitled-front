@@ -1,29 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useAppDispatch, useAppSelector } from "@hooks";
-import { authApi } from "@shared/api/authApi.ts";
-import { Link } from "react-router-dom";
-import { RiArrowDownSLine } from "react-icons/ri";
-import { setIsOpenProfile } from "./store/headerSlice.tsx";
-import { ProfileModal } from "./ProfileModal.tsx";
-import { MobileNavbar } from "./MobileNavbar.tsx";
-import { LogoBlock } from "./LogoBlock.tsx";
-import { items } from "./constants.ts";
-import { MenuItem } from "./MenuItem.tsx";
-import { skipToken } from "@reduxjs/toolkit/query";
+import React, { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useAppDispatch, useAppSelector } from '@hooks';
+import { authApi } from '@shared/api/authApi.ts';
+import { Link } from 'react-router-dom';
+import { RiArrowDownSLine } from 'react-icons/ri';
+import { setIsOpenProfile } from './store/headerSlice.tsx';
+import { ProfileModal } from './ProfileModal.tsx';
+import { MobileNavbar } from './MobileNavbar.tsx';
+import { LogoBlock } from './LogoBlock.tsx';
+import { items } from './constants.ts';
+import { MenuItem } from './MenuItem.tsx';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 export const Header: React.FC = () => {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
-  const { data: user, isLoading } = authApi.useFetchUserQuery(
-    token ? undefined : skipToken
-  );
+  const { data: user, isLoading } = authApi.useFetchUserQuery(token ? undefined : skipToken);
 
   const dispatch = useAppDispatch();
-  const { opened, rotation, isOpenProfile } = useAppSelector(
-    (state) => state.headerSlice
-  );
+  const { opened, rotation, isOpenProfile } = useAppSelector((state) => state.headerSlice);
 
   const avaRef = useRef<HTMLDivElement>(null);
 
@@ -31,8 +27,8 @@ export const Header: React.FC = () => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const openProfile = () => {
@@ -44,7 +40,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <div className="fixed w-full z-50 text-lg">
+    <div className="fixed w-full z-[500] text-lg">
       <MobileNavbar />
 
       <nav className="py-2 h-14 items-center flex bg-white filter-m text-black max-[780px]:hidden">
@@ -53,12 +49,7 @@ export const Header: React.FC = () => {
             <LogoBlock />
             <ul className="flex gap-10 max-[780px]:flex-col">
               {items.map((el, i) => (
-                <MenuItem
-                  key={`${el.title}_${i}_2`}
-                  id={i}
-                  item={el.title}
-                  path={el.path}
-                />
+                <MenuItem key={`${el.title}_${i}_2`} id={i} item={el.title} path={el.path} />
               ))}
             </ul>
           </div>
@@ -84,15 +75,11 @@ export const Header: React.FC = () => {
                 )}
                 <RiArrowDownSLine
                   size={25}
-                  className={`${
-                    isOpenProfile && "rotate-180"
-                  } transition-transform`}
+                  className={`${isOpenProfile && 'rotate-180'} transition-transform`}
                 />
               </motion.div>
               <AnimatePresence>
-                {isOpenProfile && (
-                  <ProfileModal closeModal={closeModal} avaRef={avaRef} />
-                )}
+                {isOpenProfile && <ProfileModal closeModal={closeModal} avaRef={avaRef} />}
               </AnimatePresence>
             </div>
           ) : (

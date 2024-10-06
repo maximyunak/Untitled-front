@@ -8,6 +8,13 @@ body {
   font-family: 'Montserrat';
 }
 
+body.active {
+  overflow: hidden;
+}
+
+* {
+  overscroll-behavior: none;
+}
 .alegreya {
   font-family: 'Alegreya';
 }

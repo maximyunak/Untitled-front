@@ -8,10 +8,11 @@ import { authApi } from '@shared/api/authApi';
 import { useAppDispatch } from '@hooks';
 import { logoutUser } from '@store/userSlice';
 import { setIsOpenProfile } from './store/headerSlice';
+import { useClickOutside } from '@shared/hooks/useClickOutside';
 
 interface IProps {
-  closeModal: () => void;
-  avaRef: any;
+  closeModal: (b?: boolean) => void;
+  avaRef: React.RefObject<HTMLElement>;
 }
 
 export const ProfileModal: React.FC<IProps> = ({ closeModal, avaRef }) => {
@@ -20,24 +21,7 @@ export const ProfileModal: React.FC<IProps> = ({ closeModal, avaRef }) => {
   const { data: user, refetch } = authApi.useFetchUserQuery();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(target) &&
-        avaRef.current &&
-        !avaRef.current.contains(target)
-      ) {
-        closeModal();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [closeModal]);
+  useClickOutside([modalRef, avaRef], closeModal);
 
   const handleLogOut = async () => {
     // dispatch(logoutUser());

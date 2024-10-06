@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PreferencesTag } from './PreferencesTag';
+import { categories } from '@shared/constants';
 
 interface MyTagsProps {
   selectedItems: string[];
@@ -18,16 +19,7 @@ export const MyTags: React.FC<MyTagsProps> = ({
   type,
 }) => {
   const [inputValue, setInputValue] = useState('');
-  const [categories] = useState([
-    'IT',
-    'Design',
-    'Marketing',
-    'Development',
-    'Finance',
-    'Music',
-    'Art',
-    'Sport',
-  ]);
+
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [showAll, setShowAll] = useState(false);
   const [isVisible, setIsVisible] = useState(false);

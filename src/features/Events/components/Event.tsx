@@ -2,6 +2,9 @@ import React from 'react';
 import { MyTitle } from '@shared/UI/MyTitle';
 import { IEvent } from '@shared/types/IEvent';
 import { MyFavorites } from '@shared/UI/MyFavorites';
+import { BiComment, BiRepost } from 'react-icons/bi';
+import { LiaKeySolid } from 'react-icons/lia';
+import { FcLike } from 'react-icons/fc';
 
 interface IEventProps {
   eventData: IEvent;
@@ -9,19 +12,18 @@ interface IEventProps {
 
 export const Event: React.FC<IEventProps> = ({ eventData }) => {
   return (
-    <div className="w-[49%] bg-[#393939] p-4 rounded-xl">
+    <div className="bg-[#393939] px-4 pt-4 pb-3 rounded-xl h-full relative">
+      {/* <h4>{eventData.creator.firstname}</h4> */}
       <div className="flex justify-between items-center">
         <div>
           <MyTitle text={'xl'}>{eventData.title}</MyTitle>
           <p className="text-xs font-light">3 hours ago</p>
         </div>
-        <MyFavorites />
-      </div>
-      <p className="mt-4 text-base max-w-[600px]">{eventData.description}</p>
+        <div className="alegreya italic">{eventData.country}</div>
 
-      <div className="mt-4 w-full">
-        {/* <img src={img} alt="" className="rounded-xl w-1/2" /> */}
+        {/* <MyFavorites /> */}
       </div>
+      <p className="mt-4 text-base max-w-[80%] break-words">{eventData.description}</p>
 
       <div className="mt-4 flex justify-between">
         <div className="alegreya flex gap-2 max-w-[150px]">
@@ -31,7 +33,12 @@ export const Event: React.FC<IEventProps> = ({ eventData }) => {
             </span>
           ))}
         </div>
-        <div className="alegreya italic">{eventData.country}</div>
+      </div>
+      <div className="border-t absolute w-full left-0 mt-3 border-customPurple"></div>
+      <div className="flex gap-4 mt-6 items-center">
+        <FcLike className="-mt-1" />
+        <BiComment />
+        <BiRepost />
       </div>
     </div>
   );
