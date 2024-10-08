@@ -12,7 +12,7 @@ interface IEventProps {
 
 export const Event: React.FC<IEventProps> = ({ eventData }) => {
   return (
-    <div className="bg-[#393939] px-4 pt-4 pb-3 rounded-xl h-full relative">
+    <div className="bg-[#393939] p-4 max-sm:p-3 rounded-xl h-full relative">
       {/* <h4>{eventData.creator.firstname}</h4> */}
       <div className="flex justify-between items-center">
         <div>

@@ -20,7 +20,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       <div className="container flex gap-4 justify-center">
         {/* <Sidebar /> */}
-        <main className="mt-14 max-w-[60vw] w-full">{children}</main>
+        <main className="mt-14 sm:max-w-[100vw] 2xl:max-w-[60vw] w-full">{children}</main>
       </div>
       {/* <Footer /> */}
     </div>

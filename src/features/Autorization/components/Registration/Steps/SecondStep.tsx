@@ -177,7 +177,7 @@ export const SecondStep: React.FC = () => {
               whileTap={visible.day ? { scale: 1 } : 'tap'}
               variants={mouseEventVariants}
               ref={dayRef}
-              className="bg-[#282828] rounded-xl py-2 px-5 cursor-pointer w-[81px] flex gap-3 justify-between relative z-50"
+              className="bg-[#282828] rounded-xl py-2 px-5 max-sm:px-3 cursor-pointer w-[81px] flex gap-3 justify-between relative z-50"
               onClick={() => toggleVisibility('day')}
             >
               {selectedDay}
@@ -191,7 +191,7 @@ export const SecondStep: React.FC = () => {
               <AnimatePresence>
                 {visible.day && (
                   <motion.div
-                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-2 overflow-y-auto max-h-52 z-10"
+                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-2 overflow-y-auto max-h-52 z-10 max-md:max-h-24 max-md:gap-1"
                     variants={showModalVariant}
                     animate="animate"
                     exit="initial"
@@ -235,7 +235,7 @@ export const SecondStep: React.FC = () => {
               <AnimatePresence>
                 {visible.month && (
                   <motion.div
-                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-2 overflow-y-auto max-h-52 z-10"
+                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-2 overflow-y-auto max-h-52 z-10 max-md:max-h-24 max-md:gap-1"
                     variants={showModalVariant}
                     animate="animate"
                     exit="initial"
@@ -279,7 +279,7 @@ export const SecondStep: React.FC = () => {
               <AnimatePresence>
                 {visible.year && (
                   <motion.div
-                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-4 overflow-y-auto h-52"
+                    className="bg-[#282828] rounded-xl py-3 px-4 w-full absolute top-[50px] left-0 flex flex-col gap-4 overflow-y-auto h-52 max-md:max-h-24 max-md:gap-1"
                     variants={showModalVariant}
                     animate="animate"
                     exit="initial"

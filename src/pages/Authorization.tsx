@@ -21,8 +21,12 @@ export const Authorization = () => {
   }, [user]);
   return (
     <div className="min-w-screen min-h-screen bg-[#282828] text-white">
-      <div className="flex items-center justify-center h-screen flex-col container">
-        <div className="w-[400px] p-5 rounded-3xl overflow-hidden shadow-lg bg-[#303030] ">
+      <div className="flex items-center justify-center h-screen flex-col">
+        <div
+          className="w-[400px] p-5 rounded-3xl overflow-hidden shadow-lg bg-[#303030] max-[450px]:w-[95%]
+        max-[400px]:p-3
+        "
+        >
           <AnimatePresence mode="wait">
             {pathname === '/login' ? (
               <motion.div

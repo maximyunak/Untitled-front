@@ -7,7 +7,10 @@ interface IMyTitle {
 }
 export const MyTitle: FC<IMyTitle> = ({ children, text, onClick }) => {
   return (
-    <h1 onClick={onClick} className={`text-${text ? text : 'lg'} font-medium biorhyme`}>
+    <h1
+      onClick={onClick}
+      className={`text-${text ? text : 'lg max-sm:text-base'}  font-medium biorhyme`}
+    >
       {children}
     </h1>
   );

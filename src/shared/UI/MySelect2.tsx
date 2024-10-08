@@ -1,10 +1,10 @@
-import arrowDown from "@shared/assets/icons/arrowDown.svg";
-import { categories } from "@shared/constants";
-import { MyCheckbox } from "./MyCheckbox";
-import { FC, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { MyCheckboxList } from "./MyCheckboxList";
-import { useClickOutside } from "@shared/hooks/useClickOutside";
+import arrowDown from '@shared/assets/icons/arrowDown.svg';
+import { categories } from '@shared/constants';
+import { MyCheckbox } from './MyCheckbox';
+import { FC, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { MyCheckboxList } from './MyCheckboxList';
+import { useClickOutside } from '@shared/hooks/useClickOutside';
 
 interface IMySelect2 {
   visible: boolean;
@@ -14,13 +14,7 @@ interface IMySelect2 {
   onAdd: (category: string) => void;
 }
 
-export const MySelect2: FC<IMySelect2> = ({
-  visible,
-  setVisible,
-  items,
-  selectedItems,
-  onAdd,
-}) => {
+export const MySelect2: FC<IMySelect2> = ({ visible, setVisible, items, selectedItems, onAdd }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef<HTMLDivElement>(null);
   // const [visible, setVisible] = useState<boolean>(false);
@@ -30,7 +24,7 @@ export const MySelect2: FC<IMySelect2> = ({
   return (
     <div className="relative cursor-pointer" ref={containerRef}>
       <div
-        className="w-full border hover:bg-[#272727] border-opacity-70 border-white py-1 px-3 bg-[#282828] rounded-lg mt-2 font-medium text-[14px] relative z-50 "
+        className="w-full border hover:bg-[#272727] border-opacity-70 border-white py-1 px-3 bg-[#282828] rounded-lg mt-2 font-medium text-[14px] relative z-[50]"
         onClick={() => setVisible(!visible)}
       >
         <div className="flex justify-between cursor-pointer">
@@ -66,7 +60,7 @@ export const MySelect2: FC<IMySelect2> = ({
               opacity: 0,
               top: 35,
             }}
-            className="w-full absolute top bg-[#303030] left-0 rounded-lg px-3 flex flex-col gap-3 justify-center overflow-hidden shadow-lg z-50"
+            className="w-full absolute top bg-[#303030] left-0 rounded-lg px-3 flex flex-col gap-3 justify-center overflow-hidden shadow-lg z-[51]"
           >
             {items.map((category, id) => (
               <MyCheckboxList

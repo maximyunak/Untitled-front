@@ -1,30 +1,27 @@
-import { countries } from "@shared/constants"; // Предполагаю, что `countries` — это массив стран
-import { FC, useRef, useState } from "react";
-import { MySelect } from "@shared/UI/MySelect"; // Ваш компонент для выбора страны
-import { MyTags } from "@shared/UI/MyTags"; // Компонент с тегами (категориями)
-import { MyTitle } from "@shared/UI/MyTitle";
-import { authApi } from "@shared/api/authApi";
-import { eventApi } from "@shared/api/eventApi";
-import { motion } from "framer-motion";
-import { opacityVariant, showModalVariant } from "@shared/animationProps";
-import { useClickOutside } from "@shared/hooks/useClickOutside";
+import { countries } from '@shared/constants'; // Предполагаю, что `countries` — это массив стран
+import { FC, useRef, useState } from 'react';
+import { MySelect } from '@shared/UI/MySelect'; // Ваш компонент для выбора страны
+import { MyTags } from '@shared/UI/MyTags'; // Компонент с тегами (категориями)
+import { MyTitle } from '@shared/UI/MyTitle';
+import { authApi } from '@shared/api/authApi';
+import { eventApi } from '@shared/api/eventApi';
+import { motion } from 'framer-motion';
+import { opacityVariant, showModalVariant } from '@shared/animationProps';
+import { useClickOutside } from '@shared/hooks/useClickOutside';
 
 interface ICreateEventProps {
   closeModal: () => void;
   containerRef: React.RefObject<HTMLElement>;
 }
 
-export const CreateEvent: FC<ICreateEventProps> = ({
-  closeModal,
-  containerRef,
-}) => {
+export const CreateEvent: FC<ICreateEventProps> = ({ closeModal, containerRef }) => {
   const { data: user } = authApi.useFetchUserQuery();
   const [createEvent, { isError }] = eventApi.useCreateEventMutation();
 
   const [visibleCounty, setVisibleCounty] = useState(false); // Состояние для видимости выбора страны
   const [selectedCountry, setSelectedCountry] = useState(0); // Состояние для выбранной страны
-  const [eventTitle, setEventTitle] = useState(""); // Состояние для заголовка события
-  const [eventDescription, setEventDescription] = useState(""); // Состояние для описания события
+  const [eventTitle, setEventTitle] = useState(''); // Состояние для заголовка события
+  const [eventDescription, setEventDescription] = useState(''); // Состояние для описания события
 
   const [titleError, setTitleError] = useState(false);
   const [descError, setDescError] = useState(false);
@@ -38,8 +35,8 @@ export const CreateEvent: FC<ICreateEventProps> = ({
   const clearData = () => {
     setVisibleCounty(false);
     setSelectedCountry(0);
-    setEventTitle("");
-    setEventDescription("");
+    setEventTitle('');
+    setEventDescription('');
   };
 
   const handleAddCategory = (category: string) => {
@@ -98,29 +95,29 @@ export const CreateEvent: FC<ICreateEventProps> = ({
   return (
     // <div className="min-w-screen min-h-screen bg-[#282828] text-white text-base absolute top-0 left-0">
     <motion.div
-      initial={"initial"}
-      exit={"initial"}
-      animate={"animate"}
+      initial={'initial'}
+      exit={'initial'}
+      animate={'animate'}
       variants={opacityVariant}
       className="min-w-screen min-h-screen bottom-0 right-0 z-[500] bg-[#28282890] text-white text-base fixed top-0 left-0 flex items-center justify-center flex-col"
     >
       <motion.div
         ref={modalRef}
-        initial={"initial"}
-        animate={"animate"}
-        exit={"initial"}
+        initial={'initial'}
+        animate={'animate'}
+        exit={'initial'}
         variants={showModalVariant}
-        className="w-[400px] p-5 rounded-3xl overflow-hiden shadow-xl bg-[#303030]"
+        className="w-[400px] p-5 rounded-3xl overflow-hiden shadow-xl bg-[#303030]
+        max-[480px]:w-[90%]
+        max-sm:p-3
+        "
       >
-        <h1 className="text-2xl text-center font-bold mt-2 biorhyme">
-          Create Event
-        </h1>
+        <h1 className="text-2xl text-center font-bold mt-2 biorhyme">Create Event</h1>
 
         {/* Заголовок события */}
-        <div className="relative mb-4">
-          <h1 className="text-lg font-medium biorhyme mt-4">
-            Enter an event title
-          </h1>
+        <div className="relative my-4">
+          {/* <h1 className="text-lg font-medium biorhyme mt-4">Enter an event title</h1> */}
+          <MyTitle>Enter an event title</MyTitle>
           <input
             type="text"
             placeholder="Event Title"
@@ -128,11 +125,7 @@ export const CreateEvent: FC<ICreateEventProps> = ({
             onChange={(e) => setEventTitle(e.target.value)} // Обновление состояния заголовка
             className="w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
           />
-          {titleError && (
-            <p className="absolute text-red-600 text-xs">
-              The title is required
-            </p>
-          )}
+          {titleError && <p className="absolute text-red-600 text-xs">The title is required</p>}
         </div>
 
         {/* Выбор страны */}
@@ -146,10 +139,8 @@ export const CreateEvent: FC<ICreateEventProps> = ({
         />
 
         {/* Описание события */}
-        <div className="relative mb-4">
-          <h1 className="text-lg font-medium biorhyme mt-4">
-            Enter an event description
-          </h1>
+        <div className="relative my-4">
+          <MyTitle>Enter an event description</MyTitle>
           <textarea
             placeholder="Event Description"
             value={eventDescription} // Привязка к состоянию eventDescription
@@ -157,9 +148,7 @@ export const CreateEvent: FC<ICreateEventProps> = ({
             className="w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300 outline-none resize-none"
           />
           {descError && (
-            <p className="absolute text-red-600 text-xs -mt-1">
-              The description is required
-            </p>
+            <p className="absolute text-red-600 text-xs -mt-1">The description is required</p>
           )}
         </div>
 

@@ -12,7 +12,9 @@ export const PreferencesTag: React.FC<PreferencesTagProps> = ({ text, remove }) 
 
   return (
     <div
-      className="py-2 px-3 bg-customPurple rounded-xl cursor-pointer text-base hover:opacity-85 transition"
+      className="py-2 px-3 bg-customPurple rounded-xl cursor-pointer text-base hover:opacity-85 transition
+      max-md:py-1 max-md:px-2
+      "
       onClick={handleRemoveClick}
     >
       <span className="text-green-400">#</span> {text}

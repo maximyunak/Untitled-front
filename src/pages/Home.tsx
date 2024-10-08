@@ -40,7 +40,7 @@ export const Home = () => {
   return (
     <div className="w-full">
       <h1
-        className="bottom-10 right-10 fixed rounded-full bg-customPurple w-10 h-10 flex items-center justify-center text-2xl opacity-90 hover:opacity-100 transition cursor-pointer font-medium"
+        className="bottom-10 right-10 fixed rounded-full bg-customPurple w-10 h-10 flex items-center justify-center text-2xl opacity-90 hover:opacity-100 transition cursor-pointer font-medium z-50 max-md:right-5"
         onClick={() => setIsCreate(!isCreate)}
         ref={containerRef}
       >
@@ -53,7 +53,7 @@ export const Home = () => {
         )}
       </AnimatePresence>
 
-      <div className="w-full">
+      <div className="w-full max-md:mt-4">
         <div className="flex justify-between">
           <MyTitle text="xl">Top Picks Near You</MyTitle>
           <FiFilter className="cursor-pointer" onClick={() => setVisibleFilter(!visibleFilter)} />

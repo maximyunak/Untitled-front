@@ -21,26 +21,6 @@ export const FilterEvent = () => {
   );
   const dispatch = useAppDispatch();
 
-  // const { refetch } = eventApi.useFetchEventsQuery({
-  //   selectedCategories,
-  //   selectedCountries,
-  //   titleFilter,
-  // });
-
-  // const { data, isLoading, refetch } = useQuery(
-  //   'fetchEvents', // Ключ для запроса
-  //   () =>
-  //     eventApi.endpoints.fetchEvents.query({
-  //       title: titleFilter, // Передаем title из стейта
-  //       categories: selectedCategories, // Передаем категории из стейта
-  //       country: selectedCountries[0] || '', // Передаем страну из стейта
-  //     }),
-  //   {
-  //     // Optional: Refetch the query on mount, so we always start with fresh data
-  //     refetchOnMount: true,
-  //   },
-  // );
-
   const onAddCategory = (category: string) => {
     if (selectedCategories.includes(category)) {
       dispatch(removeCategoryFilter(category));
@@ -83,8 +63,8 @@ export const FilterEvent = () => {
       className="text-base"
     >
       <MyTitle text="xl">Filter</MyTitle>
-      <div className="grid grid-cols-3">
-        <div className="w-4/5">
+      <div className="grid lg:grid-cols-3 sm:grid-cols-1 max-lg:gap-3">
+        <div className="md:w-4/5">
           <MyTitle>Search By Title</MyTitle>
           <span className="w-3/4 my-1 block h-[1px] bg-white bg-opacity-70"></span>
           <input
@@ -95,7 +75,7 @@ export const FilterEvent = () => {
             onChange={changeTitle}
           />
         </div>
-        <div className="w-4/5">
+        <div className="md:w-4/5">
           <MyTitle>Search By Country</MyTitle>
           <span className="w-3/4 my-1 block h-[1px] bg-white bg-opacity-70"></span>
           <MySelect2
@@ -106,7 +86,7 @@ export const FilterEvent = () => {
             selectedItems={selectedCountries}
           />
         </div>
-        <div className="w-4/5">
+        <div className="md:w-4/5">
           <MyTitle>Search By Category</MyTitle>
           <span className="w-3/4 my-1 block h-[1px] bg-white bg-opacity-70"></span>
 
