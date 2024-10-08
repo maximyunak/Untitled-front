@@ -1,28 +1,31 @@
-import { FC } from 'react';
-import { MyCheckbox } from './MyCheckbox';
-import { useAppDispatch, useAppSelector } from '@hooks';
-import { removeCategory, setCategory } from '@features/Events/store/eventSlice';
+import { FC } from "react";
+import { MyCheckbox } from "./MyCheckbox";
+import { useAppDispatch, useAppSelector } from "@hooks";
 
 interface IMyCheckList {
   category: string;
   active: boolean;
+  onAdd: (category: string) => void;
 }
 
-export const MyCheckboxList: FC<IMyCheckList> = ({ category }) => {
+export const MyCheckboxList: FC<IMyCheckList> = ({
+  category,
+  onAdd,
+  active,
+}) => {
   const { categories } = useAppSelector((state) => state.eventSlice);
-  const dispatch = useAppDispatch();
 
-  const onAdd = () => {
-    if (categories.includes(category)) {
-      dispatch(removeCategory(category));
-    } else {
-      dispatch(setCategory(category));
-    }
-  };
+  // const onAdd = () => {
+  //   if (categories.includes(category)) {
+  //     removeCategory(category);
+  //   } else {
+  //     setCategory(category);
+  //   }
+  // };
 
-  const active = categories.includes(category);
+  // const active = categories.includes(category);
   return (
-    <div className="flex gap-2 cursor-pointer" onClick={onAdd}>
+    <div className="flex gap-2 cursor-pointer" onClick={() => onAdd(category)}>
       <MyCheckbox active={active} />
       {category}
     </div>
