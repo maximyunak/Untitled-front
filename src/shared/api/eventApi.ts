@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IEvent } from '@shared/types/IEvent';
 import { apiUrl } from './apiUrl';
+import { IEventQuery } from '@shared/types/IEventQuery';
 
 export interface IEventRes {
   events: IEvent[];
@@ -16,11 +17,14 @@ export const eventApi = createApi({
   }),
   tagTypes: ['Events'],
   endpoints: (build) => ({
-    fetchEvents: build.query<IEventRes, void>({
-      query: () => ({
+    fetchEvents: build.query<IEventRes, IEventQuery>({
+      query: ({ titleFilter = '', selectedCategories = [], selectedCountries = [], page = 1 }) => ({
         url: '/events',
         params: {
-          // eventTypes:
+          eventTypes: selectedCategories,
+          title: titleFilter,
+          countries: selectedCountries,
+          page,
         },
       }),
       providesTags: () => ['Events'],

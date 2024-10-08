@@ -1,20 +1,15 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IEventQuery } from '@shared/types/IEventQuery';
 
-export interface IEventSlice {
-  selectedCategories: string[];
-  selectedCountries: string[];
-  titleFilter: string;
-}
-
-const initialState: IEventSlice = {
+const initialState: IEventQuery = {
   selectedCategories: [],
   selectedCountries: [],
-  titleFilter: "",
+  titleFilter: '',
 };
 
 // Создание slice
 const eventSlice = createSlice({
-  name: "event",
+  name: 'event',
   initialState,
   reducers: {
     setCategoryFilter: (state, action: PayloadAction<string>) => {
@@ -24,7 +19,7 @@ const eventSlice = createSlice({
     },
     removeCategoryFilter: (state, action: PayloadAction<string>) => {
       state.selectedCategories = state.selectedCategories.filter(
-        (category) => category !== action.payload
+        (category) => category !== action.payload,
       );
     },
     setCountryFilter: (state, action: PayloadAction<string>) => {
@@ -34,7 +29,7 @@ const eventSlice = createSlice({
     },
     removeCountryFilter: (state, action: PayloadAction<string>) => {
       state.selectedCountries = state.selectedCountries.filter(
-        (country) => country !== action.payload
+        (country) => country !== action.payload,
       );
     },
     setTitleFilter: (state, action: PayloadAction<string>) => {

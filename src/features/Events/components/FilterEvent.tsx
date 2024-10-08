@@ -1,24 +1,45 @@
-import { useAppDispatch, useAppSelector } from "@hooks";
-import { categories, countries } from "@shared/constants";
-import { MySelect2 } from "@shared/UI/MySelect2";
-import { MyTitle } from "@shared/UI/MyTitle";
-import { ChangeEvent, useState } from "react";
+import { useAppDispatch, useAppSelector } from '@hooks';
+import { categories, countries } from '@shared/constants';
+import { MySelect2 } from '@shared/UI/MySelect2';
+import { MyTitle } from '@shared/UI/MyTitle';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   removeCategoryFilter,
   removeCountryFilter,
   setCategoryFilter,
   setCountryFilter,
   setTitleFilter,
-} from "../store/eventSlice";
-import { motion } from "framer-motion";
+} from '../store/eventSlice';
+import { motion } from 'framer-motion';
+import { eventApi } from '@shared/api/eventApi';
 
 export const FilterEvent = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [visibleCountry, setVisibleCountry] = useState<boolean>(false);
   const { selectedCategories, selectedCountries, titleFilter } = useAppSelector(
-    (state) => state.eventSlice
+    (state) => state.eventSlice,
   );
   const dispatch = useAppDispatch();
+
+  // const { refetch } = eventApi.useFetchEventsQuery({
+  //   selectedCategories,
+  //   selectedCountries,
+  //   titleFilter,
+  // });
+
+  // const { data, isLoading, refetch } = useQuery(
+  //   'fetchEvents', // Ключ для запроса
+  //   () =>
+  //     eventApi.endpoints.fetchEvents.query({
+  //       title: titleFilter, // Передаем title из стейта
+  //       categories: selectedCategories, // Передаем категории из стейта
+  //       country: selectedCountries[0] || '', // Передаем страну из стейта
+  //     }),
+  //   {
+  //     // Optional: Refetch the query on mount, so we always start with fresh data
+  //     refetchOnMount: true,
+  //   },
+  // );
 
   const onAddCategory = (category: string) => {
     if (selectedCategories.includes(category)) {
@@ -44,18 +65,20 @@ export const FilterEvent = () => {
     initial: {
       opacity: 0,
       height: 0,
+      marginBottom: 0,
     },
     animate: {
       opacity: 1,
-      height: "auto",
+      height: 'auto',
+      marginBottom: 32,
     },
   };
 
   return (
     <motion.div
-      initial={"initial"}
-      animate={"animate"}
-      exit={"initial"}
+      initial={'initial'}
+      animate={'animate'}
+      exit={'initial'}
       variants={variants}
       className="text-base"
     >
@@ -75,11 +98,6 @@ export const FilterEvent = () => {
         <div className="w-4/5">
           <MyTitle>Search By Country</MyTitle>
           <span className="w-3/4 my-1 block h-[1px] bg-white bg-opacity-70"></span>
-          {/* <input
-            type="text"
-            className="w-full border border-opacity-70 border-white py-1 px-3 bg-[#282828] rounded-lg placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300"
-            placeholder="Search by title"
-          /> */}
           <MySelect2
             items={countries}
             visible={visibleCountry}
@@ -100,9 +118,9 @@ export const FilterEvent = () => {
             selectedItems={selectedCategories}
           />
         </div>
-        <h4 className="self">clear</h4>
+        {/* <h4 className="self">clear</h4> */}
       </div>
-      <span className="h-[1px] mt-4 mb-8 w-full block bg-white opacity-70"></span>
+      <span className="h-[1px] mt-4 w-full block bg-white opacity-70"></span>
     </motion.div>
   );
 };

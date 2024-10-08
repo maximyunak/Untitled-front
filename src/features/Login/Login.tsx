@@ -1,11 +1,11 @@
-import { authApi } from "@shared/api/authApi";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { authApi } from '@shared/api/authApi';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [loginUser] = authApi.useLoginUserMutation();
   const navigate = useNavigate();
   const [emailErr, setEmailErr] = useState(false);
@@ -24,10 +24,11 @@ export const Login = () => {
         };
 
         const user = await loginUser(data);
+
         if (user && user.data.accessToken) {
-          localStorage.setItem("token", user.data.accessToken);
+          localStorage.setItem('token', user.data.accessToken);
           refetch();
-          navigate("/");
+          navigate('/');
         }
       } else {
         if (password.length < 3) {
@@ -74,9 +75,7 @@ export const Login = () => {
             onChange={(e) => handleEmailChange(e.target.value)}
             className={`w-full border border-transparent py-1 px-3 border-gray-400 bg-[#282828] rounded-xl placeholder:text-sm hover:bg-[#272727] focus:border focus:border-customPurple transition-colors mt-1 duration-300`}
           />
-          {emailErr && (
-            <p className="absolute text-red-600 text-xs">Email is incorrect</p>
-          )}
+          {emailErr && <p className="absolute text-red-600 text-xs">Email is incorrect</p>}
         </div>
 
         <div className="">
