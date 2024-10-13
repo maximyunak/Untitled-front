@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MyTitle } from '@shared/UI/MyTitle';
 import { IEvent } from '@shared/types/IEvent';
 import { MyFavorites } from '@shared/UI/MyFavorites';
@@ -11,8 +11,23 @@ interface IEventProps {
 }
 
 export const Event: React.FC<IEventProps> = ({ eventData }) => {
+  const [isFull, setIsFull] = useState<boolean>(false);
+  const [initialHeight, setInitialHeight] = useState<number>(0);
+
+  const eventRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (eventRef.current) {
+      setInitialHeight(eventRef.current.offsetHeight);
+    }
+  }, []);
+
   return (
-    <div className="bg-[#393939] p-4 max-sm:p-3 rounded-xl h-full relative">
+    <div
+      ref={eventRef}
+      className="bg-[#393939] p-4 max-sm:p-3 rounded-xl h-full relative"
+      onClick={() => setIsFull(!isFull)}
+    >
       {/* <h4>{eventData.creator.firstname}</h4> */}
       <div className="flex justify-between items-center">
         <div>

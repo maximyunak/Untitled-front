@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { FetchArgs, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IEvent } from '@shared/types/IEvent';
 import { apiUrl } from './apiUrl';
 import { IEventQuery } from '@shared/types/IEventQuery';
@@ -36,6 +36,22 @@ export const eventApi = createApi({
         body: eventData,
       }),
       invalidatesTags: () => ['Events'],
+    }),
+
+    fetchMyEvents: build.query<IEvent[], void>({
+      query: () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          return 'myevents';
+        }
+        return {
+          url: 'myevents',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      // providesTags: () => ['user'],
     }),
   }),
 });

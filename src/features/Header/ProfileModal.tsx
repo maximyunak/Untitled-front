@@ -33,7 +33,7 @@ export const ProfileModal: React.FC<IProps> = ({ closeModal, avaRef }) => {
   return (
     <motion.div
       ref={modalRef}
-      className="bg-slate-100 absolute top-12 -left-16 rounded-xl w-56 py-3 px-4"
+      className="bg-slate-100 absolute top-12 -left-44 rounded-xl w-56 py-3 px-4"
       initial={{ scale: 0, opacity: 0, y: -85 }}
       animate={{ scale: 1, opacity: 1, y: 0 }}
       exit={{ scale: 0, opacity: 0, y: -85 }}
