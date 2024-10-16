@@ -2,6 +2,7 @@ import { FetchArgs, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/rea
 import { IEvent } from '@shared/types/IEvent';
 import { apiUrl } from './apiUrl';
 import { IEventQuery } from '@shared/types/IEventQuery';
+import { IComment } from '@shared/types/IComment';
 
 export interface IEventRes {
   events: IEvent[];
@@ -15,7 +16,7 @@ export const eventApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: apiUrl,
   }),
-  tagTypes: ['Events'],
+  tagTypes: ['Events', 'Comment'],
   endpoints: (build) => ({
     fetchEvents: build.query<IEventRes, IEventQuery>({
       query: ({ titleFilter = '', selectedCategories = [], selectedCountries = [], page = 1 }) => ({
@@ -52,6 +53,20 @@ export const eventApi = createApi({
         };
       },
       // providesTags: () => ['user'],
+    }),
+    createComment: build.mutation({
+      query: (commentData) => ({
+        url: `/comment/${commentData.eventId}`,
+        method: 'post',
+        body: commentData,
+      }),
+      invalidatesTags: () => ['Comment'],
+    }),
+    fetchComment: build.query<IComment[], string | number>({
+      query: (eventId) => ({
+        url: `/comment/${eventId}`,
+      }),
+      providesTags: () => ['Comment'],
     }),
   }),
 });

@@ -1,61 +1,46 @@
 import { MyInput } from '@shared/UI/MyInput';
 import { MyTitle } from '@shared/UI/MyTitle';
 import { IEvent } from '@shared/types/IEvent';
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC, useCallback, useState } from 'react';
 
 import { motion } from 'framer-motion';
 import { opacityVariant, showModalVariant } from '@shared/animationProps';
+import { eventApi } from '@shared/api/eventApi';
+import { authApi } from '@shared/api/authApi';
 
 interface IFullEvent {
   eventData: IEvent;
   onHide: () => void;
 }
-const comments = [
-  {
-    firstname: 'Maxim',
-    commentBody: 'sdfsdfsd sdfsdaf safsdafas',
-  },
-  {
-    firstname: 'Emily',
-    commentBody: 'This is a great article! I really enjoyed reading it.',
-  },
-  {
-    firstname: 'John',
-    commentBody: 'I agree with the author, this is a very insightful point.',
-  },
-  {
-    firstname: 'Sarah',
-    commentBody: 'I found this information to be very useful. Thanks for sharing!',
-  },
-  {
-    firstname: 'David',
-    commentBody: 'This is a well-written and informative article.',
-  },
-  {
-    firstname: 'Jessica',
-    commentBody:
-      'I have to disagree with the author on this point, but I appreciate the perspective.',
-  },
-  {
-    firstname: 'Michael',
-    commentBody: 'I would love to hear more about this topic. Can you elaborate?',
-  },
-  {
-    firstname: 'Ashley',
-    commentBody: 'This article sparked some interesting thoughts for me.',
-  },
-  {
-    firstname: 'Christopher',
-    commentBody: 'I can definitely relate to this article. Great work!',
-  },
-  {
-    firstname: 'Amanda',
-    commentBody: 'This is a very well-researched article. I learned a lot.',
-  },
-];
 
-export const FullEvent: FC<IFullEvent> = ({ eventData, onHide }) => {
-  console.log(eventData);
+export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
+  const [createComment] = eventApi.useCreateCommentMutation();
+  const { data: user } = authApi.useFetchUserQuery();
+  const { data: commentsData } = eventApi.useFetchCommentQuery(eventData._id);
+
+  const [comment, setComment] = useState<string>('');
+
+  console.log(commentsData);
+
+  const onCreateComment = useCallback(async () => {
+    try {
+      const commentData = {
+        eventId: eventData._id,
+        commentBody: comment,
+        email: user?.email,
+      };
+      if (commentData.email && commentData.commentBody.length > 2) {
+        await createComment(commentData);
+        setComment('');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [comment, createComment, eventData._id, user?.email]);
+
+  const onChangeComment = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setComment(e.target.value);
+  }, []);
 
   return (
     <motion.div
@@ -92,15 +77,22 @@ export const FullEvent: FC<IFullEvent> = ({ eventData, onHide }) => {
         <div className="w-[20vw] overflow-auto text-lg">
           <MyTitle>Comments</MyTitle>
           <div className="max-w-[96%]">
-            <MyInput placeholder="Leave your comment here" />
+            <div className="flex gap-2">
+              <MyInput
+                value={comment}
+                onChange={onChangeComment}
+                placeholder="Leave your comment here"
+              />
+              <button onClick={onCreateComment}>send</button>
+            </div>
             <div className="flex flex-col gap-2 mt-3 ">
-              {eventData.comments ? (
-                eventData.comments.map((comment, id) => (
+              {commentsData && commentsData.length > 0 ? (
+                commentsData.map((comment, id) => (
                   <div
                     className="flex flex-col bg-[#383838] shadow rounded-lg py-1 px-2"
-                    // key={`${comment.firstname})${id}`}
+                    key={`${comment.creator.firstname})${id}`}
                   >
-                    {/* <h1>{comment.firstname}</h1> */}
+                    <h1>{comment.creator.firstname}</h1>
                     <p className="text-sm">{comment.commentBody}</p>
                   </div>
                 ))
@@ -113,4 +105,4 @@ export const FullEvent: FC<IFullEvent> = ({ eventData, onHide }) => {
       </div>
     </motion.div>
   );
-};
+});

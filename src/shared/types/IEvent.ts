@@ -1,7 +1,8 @@
-import { IComment } from "./IComment";
-import { IUser } from "./IUser";
+import { IComment } from './IComment';
+import { IUser } from './IUser';
 
 export interface IEvent {
+  _id: number;
   country: string;
   title: string;
   description: string;
