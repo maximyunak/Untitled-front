@@ -4,13 +4,13 @@ import { CreateEvent, Event, EventList, FilterEvent } from '@features/Events';
 import { Loader } from '@features/Loader/Loader';
 import { MyTitle } from '@shared/UI/MyTitle';
 import { FiFilter } from 'react-icons/fi';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useActiveBody } from '@shared/hooks/useActiveBody';
 import { useAppSelector } from '@hooks';
 import { useInView } from 'react-intersection-observer';
 
-export const Home = () => {
+export const Home = React.memo(() => {
   // const token = localStorage.getItem("token");
   // const { data: user, isLoading } = authApi.useFetchUserQuery();
   const { selectedCategories, selectedCountries, titleFilter } = useAppSelector(
@@ -75,4 +75,4 @@ export const Home = () => {
       <div className="z-[100]"></div>
     </div>
   );
-};
+});

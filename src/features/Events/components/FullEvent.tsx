@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { opacityVariant, showModalVariant } from '@shared/animationProps';
 import { eventApi } from '@shared/api/eventApi';
 import { authApi } from '@shared/api/authApi';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 interface IFullEvent {
   eventData: IEvent;
@@ -15,7 +16,9 @@ interface IFullEvent {
 
 export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
   const [createComment] = eventApi.useCreateCommentMutation();
-  const { data: user } = authApi.useFetchUserQuery();
+  const token = localStorage.getItem('token');
+
+  const { data: user } = authApi.useFetchUserQuery(token ? undefined : skipToken);
   const { data: commentsData } = eventApi.useFetchCommentQuery(eventData._id);
 
   const [comment, setComment] = useState<string>('');

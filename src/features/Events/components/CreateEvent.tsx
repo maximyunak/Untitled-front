@@ -8,6 +8,7 @@ import { eventApi } from '@shared/api/eventApi';
 import { motion } from 'framer-motion';
 import { opacityVariant, showModalVariant } from '@shared/animationProps';
 import { useClickOutside } from '@shared/hooks/useClickOutside';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 interface ICreateEventProps {
   closeModal: () => void;
@@ -15,7 +16,8 @@ interface ICreateEventProps {
 }
 
 export const CreateEvent: FC<ICreateEventProps> = ({ closeModal, containerRef }) => {
-  const { data: user } = authApi.useFetchUserQuery();
+  const token = localStorage.getItem('token');
+  const { data: user } = authApi.useFetchUserQuery(token ? undefined : skipToken);
   const [createEvent, { isError }] = eventApi.useCreateEventMutation();
 
   const [visibleCounty, setVisibleCounty] = useState(false); // Состояние для видимости выбора страны
