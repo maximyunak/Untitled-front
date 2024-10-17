@@ -3,11 +3,13 @@ import { MyTitle } from '@shared/UI/MyTitle';
 import { IEvent } from '@shared/types/IEvent';
 import React, { ChangeEvent, FC, useCallback, useState } from 'react';
 
-import { motion } from 'framer-motion';
-import { opacityVariant, showModalVariant } from '@shared/animationProps';
+import { AnimatePresence, motion } from 'framer-motion';
+import { opacityVariant, showModalVariant, toTop } from '@shared/animationProps';
 import { eventApi } from '@shared/api/eventApi';
 import { authApi } from '@shared/api/authApi';
 import { skipToken } from '@reduxjs/toolkit/query';
+import { BiSend } from 'react-icons/bi';
+import { MdDelete, MdEdit } from 'react-icons/md';
 
 interface IFullEvent {
   eventData: IEvent;
@@ -16,10 +18,11 @@ interface IFullEvent {
 
 export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
   const [createComment] = eventApi.useCreateCommentMutation();
-  const token = localStorage.getItem('token');
-
-  const { data: user } = authApi.useFetchUserQuery(token ? undefined : skipToken);
   const { data: commentsData } = eventApi.useFetchCommentQuery(eventData._id);
+  const [deleteComment] = eventApi.useDeleteCommentMutation();
+
+  const token = localStorage.getItem('token');
+  const { data: user } = authApi.useFetchUserQuery(token ? undefined : skipToken);
 
   const [comment, setComment] = useState<string>('');
 
@@ -45,6 +48,14 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
     setComment(e.target.value);
   }, []);
 
+  const onDeleteComment = async (commentId: number | string) => {
+    try {
+      await deleteComment(commentId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <motion.div
       variants={opacityVariant}
@@ -55,7 +66,7 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
       onClick={onHide}
     >
       <div
-        className="h-3/4 bg-[#303030] flex shadow-lg rounded-2xl p-4"
+        className="h-4/6 bg-[#303030] flex shadow-lg rounded-2xl p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-[35vw] flex flex-col mt-5">
@@ -86,22 +97,45 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
                 onChange={onChangeComment}
                 placeholder="Leave your comment here"
               />
-              <button onClick={onCreateComment}>send</button>
+              <button
+                onClick={onCreateComment}
+                className="bg-[#383838] w-10 flex justify-center items-center rounded-lg hover:opacity-80 transition"
+              >
+                <BiSend />
+              </button>
             </div>
             <div className="flex flex-col gap-2 mt-3 ">
-              {commentsData && commentsData.length > 0 ? (
-                commentsData.map((comment, id) => (
-                  <div
-                    className="flex flex-col bg-[#383838] shadow rounded-lg py-1 px-2"
-                    key={`${comment.creator.firstname})${id}`}
-                  >
-                    <h1>{comment.creator.firstname}</h1>
-                    <p className="text-sm">{comment.commentBody}</p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-center mt-3">No comments yet</p>
-              )}
+              <AnimatePresence mode="wait">
+                {commentsData && commentsData.length > 0 ? (
+                  commentsData.map((comment, id) => (
+                    <motion.div
+                      variants={toTop}
+                      initial="initial"
+                      animate="opened"
+                      exit="initial"
+                      className="flex flex-col bg-[#383838] shadow rounded-lg py-1 px-2"
+                      key={`${comment.creator.firstname})${id}`}
+                    >
+                      <div className="flex justify-between w-full">
+                        <h1>{comment.creator.firstname}</h1>
+                        <div className="flex gap-1">
+                          <MdEdit size={20} />
+                          <MdDelete
+                            onClick={() => onDeleteComment(comment._id)}
+                            size={20}
+                            cursor={'pointer'}
+                          />
+                        </div>
+                      </div>
+                      <p className="text-sm overflow-hidden break-words mt-1">
+                        {comment.commentBody}
+                      </p>
+                    </motion.div>
+                  ))
+                ) : (
+                  <p className="text-sm text-center mt-3">No comments yet</p>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>

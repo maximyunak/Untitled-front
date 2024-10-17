@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@hooks';
 import { categories, countries } from '@shared/constants';
 import { MySelect2 } from '@shared/UI/MySelect2';
 import { MyTitle } from '@shared/UI/MyTitle';
-import { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
   removeCategoryFilter,
   removeCountryFilter,
@@ -13,7 +13,7 @@ import {
 import { motion } from 'framer-motion';
 import { eventApi } from '@shared/api/eventApi';
 
-export const FilterEvent = () => {
+export const FilterEvent = React.memo(() => {
   const [visible, setVisible] = useState<boolean>(false);
   const [visibleCountry, setVisibleCountry] = useState<boolean>(false);
   const { selectedCategories, selectedCountries, titleFilter } = useAppSelector(
@@ -103,4 +103,4 @@ export const FilterEvent = () => {
       <span className="h-[1px] mt-4 w-full block bg-white opacity-70"></span>
     </motion.div>
   );
-};
+});

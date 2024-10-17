@@ -68,5 +68,12 @@ export const eventApi = createApi({
       }),
       providesTags: () => ['Comment'],
     }),
+    deleteComment: build.mutation({
+      query: (commentId) => ({
+        url: `/comment/${commentId}`,
+        method: 'delete',
+      }),
+      invalidatesTags: () => ['Comment'],
+    }),
   }),
 });
