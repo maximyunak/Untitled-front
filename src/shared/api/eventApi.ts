@@ -75,5 +75,13 @@ export const eventApi = createApi({
       }),
       invalidatesTags: () => ['Comment'],
     }),
+    editComment: build.mutation({
+      query: (commentData) => ({
+        url: `/comment/${commentData.commentId}`, // передаем commentId в URL
+        method: 'put',
+        body: { commentBody: commentData.commentBody }, // передаем только commentBody в теле
+      }),
+      invalidatesTags: () => ['Comment'],
+    }),
   }),
 });

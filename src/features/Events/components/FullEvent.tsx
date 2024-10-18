@@ -3,13 +3,14 @@ import { MyTitle } from '@shared/UI/MyTitle';
 import { IEvent } from '@shared/types/IEvent';
 import React, { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, Variant, Variants, motion } from 'framer-motion';
 import { opacityVariant } from '@shared/animationProps';
 import { eventApi } from '@shared/api/eventApi';
 import { authApi } from '@shared/api/authApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { BiSend } from 'react-icons/bi';
 import { MdDelete, MdEdit } from 'react-icons/md';
+import { Comment } from './Comment';
 
 interface IFullEvent {
   eventData: IEvent;
@@ -19,36 +20,11 @@ interface IFullEvent {
 export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
   const [createComment] = eventApi.useCreateCommentMutation();
   const { data: commentsData } = eventApi.useFetchCommentQuery(eventData._id);
-  const [deleteComment] = eventApi.useDeleteCommentMutation();
-
-  const [isFirst, setIsFirst] = useState<boolean>(true); // Контроль первой загрузки
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsFirst(false);
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [commentsData?.length]);
 
   const token = localStorage.getItem('token');
   const { data: user } = authApi.useFetchUserQuery(token ? undefined : skipToken);
 
   const [comment, setComment] = useState<string>('');
-
-  // Варианты анимации с контролем задержки при первой загрузке
-  const toTopVariants = {
-    opened: (i: number) => ({
-      y: 0,
-      opacity: 1,
-      transition: {
-        delay: isFirst ? i * 0.1 : 0, // Задержка только при первом рендере
-      },
-    }),
-    initial: (i: number) => ({
-      y: 50,
-      opacity: 0,
-    }),
-  };
 
   const onCreateComment = useCallback(async () => {
     try {
@@ -70,14 +46,28 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
     setComment(e.target.value);
   }, []);
 
-  const onDeleteComment = async (commentId: number | string) => {
-    try {
-      await deleteComment(commentId);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [isFirst, setIsFirst] = useState<boolean>(true);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsFirst(false);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [comment]);
+
+  const toTopVariants: Variants = {
+    opened: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: i * 0.1,
+      },
+    }),
+    initial: {
+      y: 50,
+      opacity: 0,
+    },
+  };
   return (
     <motion.div
       variants={opacityVariant}
@@ -129,30 +119,12 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
               <AnimatePresence>
                 {commentsData && commentsData.length > 0 ? (
                   commentsData.map((comment, id) => (
-                    <motion.div
-                      variants={toTopVariants}
-                      initial="initial"
-                      animate="opened"
-                      exit="initial"
-                      custom={id}
-                      className="flex flex-col bg-[#383838] shadow rounded-lg py-1 px-2"
+                    <Comment
+                      comment={comment}
+                      index={id}
                       key={`${comment.creator.firstname})${id}`}
-                    >
-                      <div className="flex justify-between w-full">
-                        <h1>{comment.creator.firstname}</h1>
-                        <div className="flex gap-1">
-                          <MdEdit size={20} />
-                          <MdDelete
-                            onClick={() => onDeleteComment(comment._id)}
-                            size={20}
-                            cursor={'pointer'}
-                          />
-                        </div>
-                      </div>
-                      <p className="text-sm overflow-hidden break-words mt-1">
-                        {comment.commentBody}
-                      </p>
-                    </motion.div>
+                      toTopVariants={toTopVariants}
+                    />
                   ))
                 ) : (
                   <p className="text-sm text-center mt-3">No comments yet</p>
