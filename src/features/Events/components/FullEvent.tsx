@@ -1,10 +1,10 @@
 import { MyInput } from '@shared/UI/MyInput';
 import { MyTitle } from '@shared/UI/MyTitle';
 import { IEvent } from '@shared/types/IEvent';
-import React, { ChangeEvent, FC, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { opacityVariant, showModalVariant, toTop } from '@shared/animationProps';
+import { opacityVariant } from '@shared/animationProps';
 import { eventApi } from '@shared/api/eventApi';
 import { authApi } from '@shared/api/authApi';
 import { skipToken } from '@reduxjs/toolkit/query';
@@ -21,12 +21,34 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
   const { data: commentsData } = eventApi.useFetchCommentQuery(eventData._id);
   const [deleteComment] = eventApi.useDeleteCommentMutation();
 
+  const [isFirst, setIsFirst] = useState<boolean>(true); // Контроль первой загрузки
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsFirst(false);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [commentsData?.length]);
+
   const token = localStorage.getItem('token');
   const { data: user } = authApi.useFetchUserQuery(token ? undefined : skipToken);
 
   const [comment, setComment] = useState<string>('');
 
-  console.log(commentsData);
+  // Варианты анимации с контролем задержки при первой загрузке
+  const toTopVariants = {
+    opened: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: isFirst ? i * 0.1 : 0, // Задержка только при первом рендере
+      },
+    }),
+    initial: (i: number) => ({
+      y: 50,
+      opacity: 0,
+    }),
+  };
 
   const onCreateComment = useCallback(async () => {
     try {
@@ -70,7 +92,6 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-[35vw] flex flex-col mt-5">
-          {/* <MyTitle>Event Data</MyTitle> */}
           <MyTitle>{eventData.title}</MyTitle>
           <p className="text-xs font-light">3 hours ago</p>
           <p className="mt-4 text-base max-w-[80%] break-words overflow-auto mb-3">
@@ -105,14 +126,15 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
               </button>
             </div>
             <div className="flex flex-col gap-2 mt-3 ">
-              <AnimatePresence mode="wait">
+              <AnimatePresence>
                 {commentsData && commentsData.length > 0 ? (
                   commentsData.map((comment, id) => (
                     <motion.div
-                      variants={toTop}
+                      variants={toTopVariants}
                       initial="initial"
                       animate="opened"
                       exit="initial"
+                      custom={id}
                       className="flex flex-col bg-[#383838] shadow rounded-lg py-1 px-2"
                       key={`${comment.creator.firstname})${id}`}
                     >
