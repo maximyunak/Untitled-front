@@ -4,20 +4,22 @@ import { IComment } from '@shared/types/IComment';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { eventApi } from '@shared/api/eventApi';
 import { BiSend } from 'react-icons/bi';
+import { toTopVariants } from '@shared/animationProps';
 
 interface ICommentProps {
   comment: IComment;
   index: number;
-  toTopVariants: Variants;
+  // toTopVariants: Variants;
+  isFirst: boolean;
 }
 
-export const Comment: FC<ICommentProps> = ({ comment, index, toTopVariants }) => {
+export const Comment: FC<ICommentProps> = ({ comment, index, isFirst }) => {
   const [deleteComment] = eventApi.useDeleteCommentMutation();
   const [editComment] = eventApi.useEditCommentMutation();
   const [isEditComm, setIsEditComm] = useState<boolean>(false);
   const [editedText, setEditedText] = useState<string>(comment.commentBody);
 
-  const inputRef = useRef<HTMLInputElement>(null); // создаём реф для инпута
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const onDeleteComment = async (commentId: number | string) => {
     try {
@@ -43,12 +45,16 @@ export const Comment: FC<ICommentProps> = ({ comment, index, toTopVariants }) =>
     }
   };
 
-  // Устанавливаем фокус на инпут, когда включён режим редактирования
   useEffect(() => {
     if (isEditComm && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isEditComm]);
+
+  const animationProps = {
+    isFirst,
+    index,
+  };
 
   return (
     <motion.div
@@ -56,7 +62,7 @@ export const Comment: FC<ICommentProps> = ({ comment, index, toTopVariants }) =>
       initial="initial"
       animate="opened"
       exit="initial"
-      custom={index}
+      custom={animationProps}
       className="flex flex-col bg-[#383838] shadow rounded-lg py-1 px-2"
     >
       <div className="flex justify-between w-full">

@@ -7,18 +7,44 @@ import { LiaKeySolid } from 'react-icons/lia';
 import { FcLike } from 'react-icons/fc';
 import { FullEvent } from './FullEvent';
 import { useActiveBody } from '@shared/hooks/useActiveBody';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
+import { toTop, toTopVariants, variantsStepPages } from '@shared/animationProps';
 
 interface IEventProps {
   eventData: IEvent;
+  index: number;
 }
 
-export const Event: React.FC<IEventProps> = ({ eventData }) => {
+export const Event: React.FC<IEventProps> = ({ eventData, index }) => {
   const [isFull, setIsFull] = useState<boolean>(false);
   useActiveBody(isFull);
 
+  const [isFirst, setIsFirst] = useState<boolean>(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsFirst(false);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [eventData]);
+
+  const animationProps = {
+    isFirst,
+    index,
+  };
+
+  const eventRef = useRef<HTMLDivElement>(null);
+
+  const isInView = useInView(eventRef, { margin: '0px 0px 0px 0px' });
+
   return (
-    <div>
+    <motion.div
+      ref={eventRef}
+      variants={toTopVariants}
+      custom={animationProps}
+      animate={isInView ? 'opened' : 'initial'}
+      initial="initial"
+    >
       <div
         className="bg-[#393939] p-4 max-sm:p-3 rounded-xl h-full relative"
         onClick={() => setIsFull(!isFull)}
@@ -54,6 +80,6 @@ export const Event: React.FC<IEventProps> = ({ eventData }) => {
       <AnimatePresence>
         {isFull && <FullEvent eventData={eventData} onHide={() => setIsFull(!isFull)} />}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };

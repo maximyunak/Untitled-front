@@ -55,19 +55,6 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
     return () => clearTimeout(timer);
   }, [comment]);
 
-  const toTopVariants: Variants = {
-    opened: (i: number) => ({
-      y: 0,
-      opacity: 1,
-      transition: {
-        delay: i * 0.1,
-      },
-    }),
-    initial: {
-      y: 50,
-      opacity: 0,
-    },
-  };
   return (
     <motion.div
       variants={opacityVariant}
@@ -123,7 +110,7 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
                       comment={comment}
                       index={id}
                       key={`${comment.creator.firstname})${id}`}
-                      toTopVariants={toTopVariants}
+                      isFirst={isFirst}
                     />
                   ))
                 ) : (

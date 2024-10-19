@@ -5,10 +5,9 @@ import { Loader } from '@features/Loader/Loader';
 import { MyTitle } from '@shared/UI/MyTitle';
 import { FiFilter } from 'react-icons/fi';
 import React, { useRef, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, useInView } from 'framer-motion';
 import { useActiveBody } from '@shared/hooks/useActiveBody';
 import { useAppSelector } from '@hooks';
-import { useInView } from 'react-intersection-observer';
 
 export const Home = React.memo(() => {
   // const token = localStorage.getItem("token");
@@ -64,7 +63,7 @@ export const Home = React.memo(() => {
         <div className="flex flex-col gap-4" ref={eventsRef}>
           {eventData ? (
             eventData.events.map((event, id) => (
-              <Event key={`${event.title}-_${id}`} eventData={event} />
+              <Event key={`${event.title}-_${id}`} index={id} eventData={event} />
             ))
           ) : (
             <Loader />

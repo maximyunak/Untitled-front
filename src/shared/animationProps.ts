@@ -1,3 +1,5 @@
+import { Variants } from 'framer-motion';
+
 export const variantsStepPages = {
   opened: {
     x: 0,
@@ -85,5 +87,28 @@ export const opacityVariant = {
     transition: {
       duration: 0.2,
     },
+  },
+};
+
+interface ITopVar {
+  i: number;
+  isFirst: boolean;
+}
+
+export const toTopVariants: Variants = {
+  opened: (animationProps) => ({
+    y: 0,
+    opacity: 1,
+    transition: {
+      delay: animationProps.isFirst ? animationProps.index * 0.1 : 0,
+    },
+  }),
+  initial: {
+    y: 50,
+    opacity: 0,
+  },
+  exit: {
+    y: -50,
+    opacity: 0,
   },
 };
