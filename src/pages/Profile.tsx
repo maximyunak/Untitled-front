@@ -1,7 +1,7 @@
-import { Event } from '@features/Events';
-import { MyTitle } from '@shared/UI/MyTitle';
-import { eventApi } from '@shared/api/eventApi';
-import React from 'react';
+import { Event } from "@features/Events";
+import { Loader } from "@features/Loader/Loader";
+import { MyTitle } from "@shared/UI/MyTitle";
+import { eventApi } from "@shared/api/eventApi";
 
 export const Profile = () => {
   const { data: myEvents } = eventApi.useFetchMyEventsQuery();
@@ -13,9 +13,23 @@ export const Profile = () => {
       <span className="h-[1px] my-4 w-full block bg-white opacity-70"></span>
 
       <div className="flex flex-col gap-4">
-        {myEvents
-          ? myEvents.map((event, id) => <Event key={`${event.title}_${id}`} eventData={event} />)
-          : "Нou haven't created events yet"}
+        {myEvents ? (
+          myEvents.length > 0 ? (
+            myEvents.map((event, id) => (
+              <Event
+                key={`${event.title}_${id}`}
+                index={id}
+                eventData={event}
+              />
+            ))
+          ) : (
+            <div className="text-center">
+              <MyTitle>No Events</MyTitle>
+            </div>
+          )
+        ) : (
+          <Loader />
+        )}
       </div>
     </div>
   );

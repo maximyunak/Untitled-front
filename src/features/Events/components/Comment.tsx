@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { Variants, motion } from 'framer-motion';
-import { IComment } from '@shared/types/IComment';
-import { MdDelete, MdEdit } from 'react-icons/md';
-import { eventApi } from '@shared/api/eventApi';
-import { BiSend } from 'react-icons/bi';
-import { toTopVariants } from '@shared/animationProps';
+import React, { FC, useEffect, useRef, useState } from "react";
+import { Variants, motion } from "framer-motion";
+import { IComment } from "@shared/types/IComment";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { eventApi } from "@shared/api/eventApi";
+import { BiSend } from "react-icons/bi";
+import { toTopVariants } from "@shared/animationProps";
 
 interface ICommentProps {
   comment: IComment;
@@ -41,7 +41,7 @@ export const Comment: FC<ICommentProps> = ({ comment, index, isFirst }) => {
         console.log(res);
       }
     } catch (error) {
-      console.log('error', error);
+      console.log("error", error);
     }
   };
 
@@ -68,8 +68,18 @@ export const Comment: FC<ICommentProps> = ({ comment, index, isFirst }) => {
       <div className="flex justify-between w-full">
         <h1>{comment.creator.firstname}</h1>
         <div className="flex gap-1">
-          <MdEdit size={20} onClick={() => setIsEditComm(!isEditComm)} cursor={'pointer'} />
-          <MdDelete onClick={() => onDeleteComment(comment._id)} size={20} cursor={'pointer'} />
+          <MdEdit
+            size={20}
+            onClick={() => setIsEditComm(!isEditComm)}
+            cursor={"pointer"}
+            className="hover:opacity-75 transition"
+          />
+          <MdDelete
+            onClick={() => onDeleteComment(comment._id)}
+            size={20}
+            cursor={"pointer"}
+            className="hover:opacity-75 transition"
+          />
         </div>
       </div>
 
@@ -82,7 +92,11 @@ export const Comment: FC<ICommentProps> = ({ comment, index, isFirst }) => {
             value={editedText}
             onChange={(e) => setEditedText(e.target.value)}
           />
-          <BiSend onClick={onSaveComment} />
+          <BiSend
+            onClick={onSaveComment}
+            cursor={"pointer"}
+            className="hover:opacity-75 transition"
+          />
         </div>
       ) : (
         <p className="text-base overflow-hidden break-words mt-1 border-b border-transparent">

@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        customPurple: '#8b74ff', // You can add your desired color code here
+        customPurple: "#8b74ff",
       },
       transitionDuration: {
-        default: '3000ms', // Добавляем кастомное значение
+        default: "3000ms",
       },
     },
   },

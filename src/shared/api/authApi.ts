@@ -1,48 +1,42 @@
-import { createApi, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IUser } from '@shared/types/IUser';
-import { apiUrl } from './apiUrl';
+import {
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
+import { IUser } from "@shared/types/IUser";
+import { apiUrl, baseQueryWithAuth } from "./apiUrl";
+
+// Функция для добавления Authorization к заголовкам
 
 export const authApi = createApi({
-  reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: apiUrl,
-  }),
-  tagTypes: ['Users', 'user'],
+  reducerPath: "authApi",
+  baseQuery: baseQueryWithAuth,
+  tagTypes: ["Users", "user"],
   endpoints: (build) => ({
     fetchAllUsers: build.query<IUser[], void>({
       query: () => ({
-        url: '/get',
+        url: "/get",
       }),
-      providesTags: () => ['Users'],
+      providesTags: () => ["Users"],
     }),
     fetchUser: build.query<IUser, void>({
-      query: (): string | FetchArgs => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          return 'getUser'; // Просто возвращаем URL, если токена нет
-        }
-        return {
-          url: 'getUser',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-      },
-      providesTags: () => ['user'],
+      query: () => ({
+        url: "getUser",
+      }),
+      providesTags: () => ["user"],
     }),
-
     registrationUser: build.mutation({
       query: (user) => ({
-        url: '/registration',
-        method: 'post',
+        url: "/registration",
+        method: "post",
         body: user,
       }),
-      invalidatesTags: ['Users'],
+      invalidatesTags: ["Users"],
     }),
     loginUser: build.mutation({
       query: (data) => ({
-        url: '/login',
-        method: 'post',
+        url: "/login",
+        method: "post",
         body: data,
       }),
     }),
