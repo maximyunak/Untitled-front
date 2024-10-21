@@ -6,6 +6,7 @@ import { Home } from "./pages/Home";
 import { Messages } from "./pages/Messages";
 import { Profile } from "./pages/Profile";
 import { Authorization } from "./pages/Authorization";
+import { Saved } from "./pages/Saved.tsx";
 
 export const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ export const App: React.FC = () => {
               {/* <Route path="/login" element={<Login />} /> */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/messages" element={<Messages />} />
+              <Route path="/saved" element={<Saved />} />
             </Routes>
           </Layout>
         }

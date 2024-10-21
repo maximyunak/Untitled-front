@@ -14,6 +14,7 @@ import {
   variantsStepPages,
 } from "@shared/animationProps";
 import { eventApi } from "@shared/api/eventApi";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 interface IEventProps {
   eventData: IEvent;
@@ -94,11 +95,16 @@ export const Event: React.FC<IEventProps> = ({ eventData, index }) => {
         </div>
         <div className="border-t absolute w-full left-0 mt-3 border-customPurple"></div>
         <div className="flex gap-4 mt-6 items-center">
-          <FcLike
+          {/* <FcLike
             className="-mt-1"
             onClick={handleSaveEvent}
             aria-label="Like"
-          />
+          /> */}
+          {eventData.saved ? (
+            <MdFavorite />
+          ) : (
+            <MdFavoriteBorder onClick={handleSaveEvent} aria-label="Like" />
+          )}
           <BiComment
             // onClick={}
             aria-label="Comment"

@@ -16,4 +16,8 @@ export const items = [
     title: "Profile",
     path: "/profile",
   },
+  {
+    title: "Saved",
+    path: "/saved",
+  },
 ];

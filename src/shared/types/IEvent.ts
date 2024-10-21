@@ -1,5 +1,5 @@
-import { IComment } from './IComment';
-import { IUser } from './IUser';
+import { IComment } from "./IComment";
+import { IUser } from "./IUser";
 
 export interface IEvent {
   _id: number;
@@ -9,4 +9,5 @@ export interface IEvent {
   eventTypes: string[];
   creator: IUser; // Ссылка на пользователя, который создал событие
   comments: IComment[]; // Массив комментариев
+  saved: boolean;
 }

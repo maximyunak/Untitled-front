@@ -18,7 +18,7 @@ export interface IEventRes {
 export const eventApi = createApi({
   reducerPath: "eventApi",
   baseQuery: baseQueryWithAuth,
-  tagTypes: ["Events", "Comment"],
+  tagTypes: ["Events", "Comment", "Saved"],
   endpoints: (build) => ({
     fetchEvents: build.query<IEventRes, IEventQuery>({
       query: ({
@@ -45,7 +45,6 @@ export const eventApi = createApi({
       }),
       invalidatesTags: () => ["Events"],
     }),
-
     fetchMyEvents: build.query<IEvent[], void>({
       query: () => {
         const token = localStorage.getItem("token");
@@ -95,13 +94,13 @@ export const eventApi = createApi({
         url: `/saved/${eventId}`, // передаем commentId в URL
         method: "post",
       }),
-      // invalidatesTags: () => ["Comment"],
+      invalidatesTags: () => ["Saved", "Events"],
     }),
-    getSavedEvent: build.query({
+    getSavedEvent: build.query<IEvent[], void>({
       query: () => ({
         url: "saved",
       }),
-      // providesTags: () => ["Comment"],
+      providesTags: () => ["Saved"],
     }),
   }),
 });
