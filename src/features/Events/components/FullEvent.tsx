@@ -1,16 +1,22 @@
-import { MyInput } from '@shared/UI/MyInput';
-import { MyTitle } from '@shared/UI/MyTitle';
-import { IEvent } from '@shared/types/IEvent';
-import React, { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
+import { MyInput } from "@shared/UI/MyInput";
+import { MyTitle } from "@shared/UI/MyTitle";
+import { IEvent } from "@shared/types/IEvent";
+import React, {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
-import { AnimatePresence, Variant, Variants, motion } from 'framer-motion';
-import { opacityVariant } from '@shared/animationProps';
-import { eventApi } from '@shared/api/eventApi';
-import { authApi } from '@shared/api/authApi';
-import { skipToken } from '@reduxjs/toolkit/query';
-import { BiSend } from 'react-icons/bi';
-import { MdDelete, MdEdit } from 'react-icons/md';
-import { Comment } from './Comment';
+import { AnimatePresence, Variant, Variants, motion } from "framer-motion";
+import { opacityVariant } from "@shared/animationProps";
+import { eventApi } from "@shared/api/eventApi";
+import { authApi } from "@shared/api/authApi";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { BiSend } from "react-icons/bi";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { Comment } from "./Comment";
 
 interface IFullEvent {
   eventData: IEvent;
@@ -21,10 +27,12 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
   const [createComment] = eventApi.useCreateCommentMutation();
   const { data: commentsData } = eventApi.useFetchCommentQuery(eventData._id);
 
-  const token = localStorage.getItem('token');
-  const { data: user } = authApi.useFetchUserQuery(token ? undefined : skipToken);
+  const token = localStorage.getItem("token");
+  const { data: user } = authApi.useFetchUserQuery(
+    token ? undefined : skipToken
+  );
 
-  const [comment, setComment] = useState<string>('');
+  const [comment, setComment] = useState<string>("");
 
   const onCreateComment = useCallback(async () => {
     try {
@@ -35,7 +43,7 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
       };
       if (commentData.email && commentData.commentBody.length > 2) {
         await createComment(commentData);
-        setComment('');
+        setComment("");
       }
     } catch (error) {
       console.log(error);
@@ -65,7 +73,7 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
       onClick={onHide}
     >
       <div
-        className="h-4/6 bg-[#303030] flex shadow-lg rounded-2xl p-4"
+        className="h-4/6 bg-[#303030] flex shadow-lg rounded-2xl p-4 max-lg:flex-col max-lg:w-4/6 max-md:w-10/12"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-[35vw] flex flex-col mt-5">
@@ -84,11 +92,11 @@ export const FullEvent: FC<IFullEvent> = React.memo(({ eventData, onHide }) => {
           </div>
           <div className="alegreya italic">{eventData.country}</div>
         </div>
-        <span className="h-full w-px block bg-white bg-opacity-30 ml-10 mr-4"></span>
+        <span className="h-full w-px block bg-white bg-opacity-30 lg:ml-10 lg:mr-4 max-lg:h-px max-lg:w-full max-lg:my-4 max-lg:mt-auto "></span>
 
-        <div className="w-[20vw] overflow-auto text-lg">
+        <div className="w-[20vw] overflow-auto text-lg max-xl:w-[25vw] max-lg:w-full max-lg:mt-auto">
           <MyTitle>Comments</MyTitle>
-          <div className="max-w-[96%]">
+          <div className="lg:max-w-[96%]">
             <div className="flex gap-2">
               <MyInput
                 value={comment}

@@ -19,14 +19,24 @@ import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 interface IEventProps {
   eventData: IEvent;
   index: number;
+  saved?: boolean;
 }
 
-export const Event: React.FC<IEventProps> = ({ eventData, index }) => {
+export const Event: React.FC<IEventProps> = ({ eventData, index, saved }) => {
   const [saveEvent] = eventApi.useSaveEventMutation();
   const [isFull, setIsFull] = useState<boolean>(false);
   useActiveBody(isFull);
 
   const [isFirst, setIsFirst] = useState<boolean>(true);
+  const [isLiked, setIsLiked] = useState<boolean>(eventData.saved);
+
+  useEffect(() => {
+    if (eventData.saved) {
+      setIsLiked(eventData.saved);
+    } else if (!eventData.saved && saved) {
+      setIsLiked(saved);
+    }
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,7 +60,7 @@ export const Event: React.FC<IEventProps> = ({ eventData, index }) => {
 
   const handleSaveEvent = (e: MouseEvent<SVGElement>) => {
     e.stopPropagation();
-
+    setIsLiked(!isLiked);
     try {
       saveEvent(eventData._id);
     } catch (error) {
@@ -100,8 +110,8 @@ export const Event: React.FC<IEventProps> = ({ eventData, index }) => {
             onClick={handleSaveEvent}
             aria-label="Like"
           /> */}
-          {eventData.saved ? (
-            <MdFavorite />
+          {isLiked ? (
+            <MdFavorite onClick={handleSaveEvent} />
           ) : (
             <MdFavoriteBorder onClick={handleSaveEvent} aria-label="Like" />
           )}

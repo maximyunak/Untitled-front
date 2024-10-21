@@ -25,6 +25,7 @@ export const Saved = () => {
                 key={`${event.title}_${id}`}
                 index={id}
                 eventData={event}
+                saved={true}
               />
             ))
           ) : (
