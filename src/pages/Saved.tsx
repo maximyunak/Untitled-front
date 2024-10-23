@@ -6,11 +6,6 @@ import React from "react";
 
 export const Saved = () => {
   const { data: savedEvents } = eventApi.useGetSavedEventQuery();
-  console.log(savedEvents);
-
-  if (savedEvents) {
-    console.log(savedEvents[0]._id);
-  }
 
   return (
     <div>

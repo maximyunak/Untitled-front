@@ -15,16 +15,28 @@ import {
 } from "@shared/animationProps";
 import { eventApi } from "@shared/api/eventApi";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { useUser } from "@shared/hooks/useUser";
 
 interface IEventProps {
   eventData: IEvent;
   index: number;
   saved?: boolean;
+  canEdit?: boolean;
 }
 
-export const Event: React.FC<IEventProps> = ({ eventData, index, saved }) => {
+export const Event: React.FC<IEventProps> = ({
+  eventData,
+  index,
+  saved,
+  canEdit,
+}) => {
+  const user = useUser();
+
+  const [isComment, setIsComment] = useState<boolean>(false);
+
   const [saveEvent] = eventApi.useSaveEventMutation();
   const [isFull, setIsFull] = useState<boolean>(false);
+
   useActiveBody(isFull);
 
   const [isFirst, setIsFirst] = useState<boolean>(true);
@@ -53,10 +65,6 @@ export const Event: React.FC<IEventProps> = ({ eventData, index, saved }) => {
   const eventRef = useRef<HTMLDivElement>(null);
 
   const isInView = useInView(eventRef, { margin: "0px 0px 0px 0px" });
-
-  // const stopPropagation = (e) => {
-  // e.stopPropagation();
-  // };
 
   const handleSaveEvent = (e: MouseEvent<SVGElement>) => {
     e.stopPropagation();
@@ -105,29 +113,38 @@ export const Event: React.FC<IEventProps> = ({ eventData, index, saved }) => {
         </div>
         <div className="border-t absolute w-full left-0 mt-3 border-customPurple"></div>
         <div className="flex gap-4 mt-6 items-center">
-          {/* <FcLike
-            className="-mt-1"
-            onClick={handleSaveEvent}
-            aria-label="Like"
-          /> */}
-          {isLiked ? (
-            <MdFavorite onClick={handleSaveEvent} />
+          {user ? (
+            isLiked ? (
+              <MdFavorite
+                aria-label="Like"
+                onClick={handleSaveEvent}
+                className="hover:opacity-75 transition"
+              />
+            ) : (
+              <MdFavoriteBorder
+                onClick={handleSaveEvent}
+                aria-label="Like"
+                className="hover:opacity-75 transition"
+              />
+            )
           ) : (
-            <MdFavoriteBorder onClick={handleSaveEvent} aria-label="Like" />
+            <MdFavoriteBorder aria-label="Like" opacity={0.8} />
           )}
           <BiComment
-            // onClick={}
+            onClick={() => setIsComment(true)}
             aria-label="Comment"
-          />
-          <BiRepost
-            //  onClick={}
-            aria-label="Repost"
+            className="hover:opacity-75 transition"
           />
         </div>
       </div>
       <AnimatePresence>
         {isFull && (
-          <FullEvent eventData={eventData} onHide={() => setIsFull(!isFull)} />
+          <FullEvent
+            setIsComment={setIsComment}
+            eventData={eventData}
+            isComment={isComment}
+            onHide={() => setIsFull(!isFull)}
+          />
         )}
       </AnimatePresence>
     </motion.div>

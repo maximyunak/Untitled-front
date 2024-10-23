@@ -1,25 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useAppDispatch, useAppSelector } from '@hooks';
-import { authApi } from '@shared/api/authApi.ts';
-import { Link } from 'react-router-dom';
-import { RiArrowDownSLine } from 'react-icons/ri';
-import { setIsOpenProfile } from './store/headerSlice.tsx';
-import { ProfileModal } from './ProfileModal.tsx';
-import { MobileNavbar } from './MobileNavbar.tsx';
-import { LogoBlock } from './LogoBlock.tsx';
-import { items } from './constants.ts';
-import { MenuItem } from './MenuItem.tsx';
-import { skipToken } from '@reduxjs/toolkit/query';
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useAppDispatch, useAppSelector } from "@hooks";
+import { authApi } from "@shared/api/authApi.ts";
+import { Link } from "react-router-dom";
+import { RiArrowDownSLine } from "react-icons/ri";
+import { setIsOpenProfile } from "./store/headerSlice.tsx";
+import { ProfileModal } from "./ProfileModal.tsx";
+import { MobileNavbar } from "./MobileNavbar.tsx";
+import { LogoBlock } from "./LogoBlock.tsx";
+import { items } from "./constants.ts";
+import { MenuItem } from "./MenuItem.tsx";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 export const Header: React.FC = () => {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
-  const { data: user, isLoading } = authApi.useFetchUserQuery(token ? undefined : skipToken);
+  const { data: user, isLoading } = authApi.useFetchUserQuery(
+    token ? undefined : skipToken
+  );
 
   const dispatch = useAppDispatch();
-  const { opened, rotation, isOpenProfile } = useAppSelector((state) => state.headerSlice);
+  const { opened, rotation, isOpenProfile } = useAppSelector(
+    (state) => state.headerSlice
+  );
 
   const avaRef = useRef<HTMLDivElement>(null);
 
@@ -27,8 +31,8 @@ export const Header: React.FC = () => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
     };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const openProfile = () => {
@@ -48,9 +52,22 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-32 max-[780px]:flex-col max-[780px]:items-start max-[1030px]:gap-10">
             <LogoBlock />
             <ul className="flex gap-10 max-[780px]:flex-col">
-              {items.map((el, i) => (
-                <MenuItem key={`${el.title}_${i}_2`} id={i} item={el.title} path={el.path} />
-              ))}
+              {/* {items.map((el, i) => (
+                <MenuItem id={i} item={el.title} path={el.path} />
+              ))} */}
+              {items.map((el, i) =>
+                // Отрисовываем элемент, если у него block: false или если есть пользователь
+                user || !el.block ? (
+                  <li key={i}>
+                    <MenuItem
+                      id={i}
+                      item={el.title}
+                      key={`${el.title}_${i}_2`}
+                      path={el.path}
+                    />
+                  </li>
+                ) : null
+              )}
             </ul>
           </div>
 
@@ -75,11 +92,15 @@ export const Header: React.FC = () => {
                 )}
                 <RiArrowDownSLine
                   size={25}
-                  className={`${isOpenProfile && 'rotate-180'} transition-transform`}
+                  className={`${
+                    isOpenProfile && "rotate-180"
+                  } transition-transform`}
                 />
               </motion.div>
               <AnimatePresence>
-                {isOpenProfile && <ProfileModal closeModal={closeModal} avaRef={avaRef} />}
+                {isOpenProfile && (
+                  <ProfileModal closeModal={closeModal} avaRef={avaRef} />
+                )}
               </AnimatePresence>
             </div>
           ) : (

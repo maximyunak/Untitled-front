@@ -18,7 +18,7 @@ export interface IEventRes {
 export const eventApi = createApi({
   reducerPath: "eventApi",
   baseQuery: baseQueryWithAuth,
-  tagTypes: ["Events", "Comment", "Saved"],
+  tagTypes: ["Events", "Comment", "Saved", "MyEvents"],
   endpoints: (build) => ({
     fetchEvents: build.query<IEventRes, IEventQuery>({
       query: ({
@@ -43,7 +43,7 @@ export const eventApi = createApi({
         method: "post",
         body: eventData,
       }),
-      invalidatesTags: () => ["Events"],
+      invalidatesTags: () => ["Events", "MyEvents"],
     }),
     fetchMyEvents: build.query<IEvent[], void>({
       query: () => {
@@ -58,7 +58,7 @@ export const eventApi = createApi({
           },
         };
       },
-      // providesTags: () => ['user'],
+      providesTags: () => ["MyEvents"],
     }),
     createComment: build.mutation({
       query: (commentData) => ({
@@ -87,14 +87,14 @@ export const eventApi = createApi({
         method: "put",
         body: { commentBody: commentData.commentBody }, // передаем только commentBody в теле
       }),
-      invalidatesTags: () => ["Comment"],
+      invalidatesTags: () => ["Comment", "MyEvents"],
     }),
     saveEvent: build.mutation({
       query: (eventId) => ({
         url: `/saved/${eventId}`, // передаем commentId в URL
         method: "post",
       }),
-      invalidatesTags: () => ["Saved", "Events"],
+      invalidatesTags: () => ["Events", "Saved", "MyEvents"],
     }),
     getSavedEvent: build.query<IEvent[], void>({
       query: () => ({

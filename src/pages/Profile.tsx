@@ -1,11 +1,23 @@
 import { Event } from "@features/Events";
 import { Loader } from "@features/Loader/Loader";
+import { skipToken } from "@reduxjs/toolkit/query";
 import { MyTitle } from "@shared/UI/MyTitle";
+import { authApi } from "@shared/api/authApi";
 import { eventApi } from "@shared/api/eventApi";
+import { useUser } from "@shared/hooks/useUser";
+import { useEffect, useLayoutEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
   const { data: myEvents } = eventApi.useFetchMyEventsQuery();
-  console.log(myEvents);
+  const navigate = useNavigate();
+  const user = useUser();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <div>
@@ -20,6 +32,7 @@ export const Profile = () => {
                 key={`${event.title}_${id}`}
                 index={id}
                 eventData={event}
+                canEdit={true}
               />
             ))
           ) : (

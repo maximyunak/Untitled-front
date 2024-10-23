@@ -7,17 +7,16 @@ export const items = [
   {
     title: "Home",
     path: "/",
-  },
-  {
-    title: "Messages",
-    path: "/messages",
+    block: false,
   },
   {
     title: "Profile",
     path: "/profile",
+    block: true,
   },
   {
     title: "Saved",
     path: "/saved",
+    block: true,
   },
 ];
