@@ -83,15 +83,15 @@ export const eventApi = createApi({
     }),
     editComment: build.mutation({
       query: (commentData) => ({
-        url: `/comment/${commentData.commentId}`, // передаем commentId в URL
+        url: `/comment/${commentData.commentId}`,
         method: "put",
-        body: { commentBody: commentData.commentBody }, // передаем только commentBody в теле
+        body: { commentBody: commentData.commentBody },
       }),
       invalidatesTags: () => ["Comment", "MyEvents"],
     }),
     saveEvent: build.mutation({
       query: (eventId) => ({
-        url: `/saved/${eventId}`, // передаем commentId в URL
+        url: `/saved/${eventId}`,
         method: "post",
       }),
       invalidatesTags: () => ["Events", "Saved", "MyEvents"],
@@ -101,6 +101,21 @@ export const eventApi = createApi({
         url: "saved",
       }),
       providesTags: () => ["Saved"],
+    }),
+    editEvent: build.mutation({
+      query: (editData) => ({
+        url: `/event/${editData.eventId}`,
+        method: "put",
+        body: editData.data,
+      }),
+      invalidatesTags: () => ["Events", "Saved", "MyEvents"],
+    }),
+    deleteEvent: build.mutation({
+      query: (eventId) => ({
+        url: `/event/${eventId}`,
+        method: "delete",
+      }),
+      invalidatesTags: () => ["Events", "Saved", "MyEvents"],
     }),
   }),
 });

@@ -24,11 +24,13 @@ interface IFullEvent {
   onHide: () => void;
   isComment: boolean;
   setIsComment: (b: boolean) => void;
+  canEdit?: boolean;
 }
 
 export const FullEvent: FC<IFullEvent> = React.memo(
-  ({ eventData, onHide, isComment, setIsComment }) => {
+  ({ eventData, onHide, isComment, setIsComment, canEdit }) => {
     const [createComment] = eventApi.useCreateCommentMutation();
+    const [deleteEvent] = eventApi.useDeleteEventMutation();
     const { data: commentsData } = eventApi.useFetchCommentQuery(eventData._id);
 
     const token = localStorage.getItem("token");
@@ -37,8 +39,6 @@ export const FullEvent: FC<IFullEvent> = React.memo(
     );
 
     const [comment, setComment] = useState<string>("");
-
-    const commentRef = useRef<HTMLInputElement>(null);
 
     const onCreateComment = useCallback(async () => {
       try {
@@ -73,6 +73,13 @@ export const FullEvent: FC<IFullEvent> = React.memo(
       setIsComment(false);
     }, []);
 
+    const handleDeleteEvent = () => {
+      try {
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     return (
       <motion.div
         variants={opacityVariant}
@@ -87,8 +94,13 @@ export const FullEvent: FC<IFullEvent> = React.memo(
           onClick={(e) => e.stopPropagation()}
         >
           <div className="w-[35vw] flex flex-col mt-5">
-            <MyTitle>{eventData.title}</MyTitle>
-            <p className="text-xs font-light">3 hours ago</p>
+            <div className="flex justify-between">
+              <div>
+                <MyTitle>{eventData.title}</MyTitle>
+                <p className="text-xs font-light">3 hours ago</p>
+              </div>
+              <div>{canEdit && <MdDelete />}</div>
+            </div>
             <p className="mt-4 text-base max-w-[80%] break-words overflow-auto mb-3">
               {eventData.description}
             </p>

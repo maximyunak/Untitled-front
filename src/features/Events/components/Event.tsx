@@ -144,6 +144,7 @@ export const Event: React.FC<IEventProps> = ({
             eventData={eventData}
             isComment={isComment}
             onHide={() => setIsFull(!isFull)}
+            canEdit={canEdit}
           />
         )}
       </AnimatePresence>
